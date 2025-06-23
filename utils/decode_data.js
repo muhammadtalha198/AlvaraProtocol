@@ -1,0 +1,57 @@
+const { ethers, network } = require("hardhat");
+const interchainTokenServiceContractABI = require("../scripts/axelar/utils/interchainTokenServiceABI.json");
+const ethAlvaContractABI = require("../scripts/axelar/utils/Eth_Alva_Abi.json");
+const factoryBTS = require("../artifacts/contracts/Factory.sol/Factory.json");
+const btsABI = require("../artifacts/contracts/BTS.sol/BasketTokenStandard.json");
+const btsPairABI = require("../artifacts/contracts/tokens/BTSPair.sol/BasketTokenStandardPair.json");
+const mockToken = require("../artifacts/contracts/interfaces/IERC20.sol/IERC20.json");
+const routerContract = require("../artifacts/contracts/Mock/UniswapV2Router02.sol/UniswapV2Router02.json");
+
+async function main() {
+  const contractAddress = "0xB9831bec937d45215444E2EA989D9F500614F71E";
+  const iface = new ethers.Interface(factoryBTS.abi);
+
+  //trx data
+  const data =
+    "0x670bee6b0000000000000000000000000000000000000000000000000000000000000120000000000000000000000000000000000000000000000000000000000000016000000000000000000000000000000000000000000000000000000000000001a000000000000000000000000000000000000000000000000000000000000001e0000000000000000000000000000000000000000000000000000000000000022000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000000064000000000000000000000000000000000000000000000000000000000000026000000000000000000000000000000000000000000000000000000000000002a0000000000000000000000000000000000000000000000000000000000000000461736466000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000003617366000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000010000000000000000000000000fc4580f70c517b148a141f3721c5138f74401b100000000000000000000000000000000000000000000000000000000000000010000000000000000000000000000000000000000000000000000000000002710000000000000000000000000000000000000000000000000000000000000000a74657374696e2e636f6d000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001310000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000067465737474730000000000000000000000000000000000000000000000000000";
+  const decodedData = iface.parseTransaction({ data });
+  // console.log("Function:", decodedData.name);
+  // console.log("Args:", decodedData.args);
+
+  // //method data
+  // const data =
+  //   "0xe450d38c000000000000000000000000a5de4d331f7a61dd0179b4f1493ec1e2d713ae290000000000000000000000000000000000000000000000a5610d77de53ed38d700000000000000000000000000000000000000000064568291b4d39503bb850f";
+  // const decodedData = iface.decodeFunctionData("createBTS", data);
+
+  console.log("Decoded Data:", decodedData);
+
+  const rpc = network.config.url;
+  const chainId = network.config.chainId;
+
+  console.log("chainId, rpc", { rpc, chainId });
+
+  // Increasing the amount to 1 ETH to ensure it meets the contract's requirements
+  // The commented out line in Factory.sol implies a minimum of 1 ETH might be expected:
+  // if (msg.value < 1 ether) revert InvalidAmount();
+  const amountToSend = ethers.parseEther("1.0");
+
+  const provider = new ethers.JsonRpcProvider(rpc, chainId);
+  const tx = {
+    to: contractAddress,
+    data,
+    from: "0xc68aCDcC33e5cbA63B120B91A0ddb01b51846b1f",
+    value: amountToSend
+  };
+
+  try {
+    const estimate = await provider.estimateGas(tx);
+    console.log("Gas Estimate:", estimate.toString());
+  } catch (error) {
+    console.error("Gas Estimation Error:", error);
+  }
+}
+
+main().catch((error) => {
+  console.error(error);
+  process.exitCode = 1;
+});
