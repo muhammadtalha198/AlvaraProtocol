@@ -1,0 +1,711 @@
+{
+	"deploy": {
+		"VM:-": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"main:1": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"ropsten:3": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"rinkeby:4": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"kovan:42": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"goerli:5": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		},
+		"Custom": {
+			"linkReferences": {},
+			"autoDeployLib": true
+		}
+	},
+	"data": {
+		"bytecode": {
+			"functionDebugData": {},
+			"generatedSources": [],
+			"linkReferences": {},
+			"object": "",
+			"opcodes": "",
+			"sourceMap": ""
+		},
+		"deployedBytecode": {
+			"functionDebugData": {},
+			"generatedSources": [],
+			"immutableReferences": {},
+			"linkReferences": {},
+			"object": "",
+			"opcodes": "",
+			"sourceMap": ""
+		},
+		"gasEstimates": null,
+		"methodIdentifiers": {
+			"addWhitelistedContract(address)": "46704adb",
+			"alva()": "b28775cd",
+			"btsImplementation()": "f74a28d1",
+			"btsPairImplementation()": "f1f0471b",
+			"calMgmtFee(uint256,uint256)": "d23aaed3",
+			"collectionUri()": "defcd4b3",
+			"createBTS(string,string,address[],uint256[],string,uint256,string,string,uint256)": "6a026bcf",
+			"dewhitelistContract(address)": "0b9421bd",
+			"getAmountsOut(uint256,address[])": "d06ca61f",
+			"getBTSAtIndex(uint256)": "0aa959a3",
+			"getContractURI()": "37929eb4",
+			"getPath(address,address)": "d88e3e3b",
+			"getPlatformFeeConfig()": "c4e994a0",
+			"initialize(address,uint16,address,address,uint256,address,string,address,address,address,address,uint256)": "ea2cc846",
+			"isWhitelistedContract(address)": "3b9589a9",
+			"minBTSCreationAmount()": "22ee3fa1",
+			"minLpWithdrawal()": "6dbd5d2a",
+			"minPercentALVA()": "01c4aebe",
+			"monthlyFeeRate()": "ef1e095f",
+			"router()": "f887ea40",
+			"royaltyPercentage()": "8a71bb2d",
+			"royaltyReceiver()": "9fbc8713",
+			"setFeeCollector(address)": "a42dce80",
+			"setMinLpWithdrawal(uint256)": "b0ec8be9",
+			"setPlatformFeeConfig(uint16,uint16,uint16)": "bbf75517",
+			"totalBTS()": "2782447a",
+			"updateAlva(address)": "5ee70f09",
+			"updateBTSImplementation(address)": "c43ba010",
+			"updateBTSPairImplementation(address)": "31e15c7c",
+			"updateCollectionURI(string)": "7910af6f",
+			"updateMinBTSCreationAmount(uint256)": "0217d7c3",
+			"updateMinPercentALVA(uint16)": "251ae3d6",
+			"updateRoyaltyPercentage(uint256)": "621bb669",
+			"updateRoyaltyReceiver(address)": "29dc4d9b",
+			"weth()": "3fc8cef3"
+		}
+	},
+	"abi": [
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "contractAddr",
+					"type": "address"
+				}
+			],
+			"name": "addWhitelistedContract",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "alva",
+			"outputs": [
+				{
+					"internalType": "address",
+					"name": "",
+					"type": "address"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "btsImplementation",
+			"outputs": [
+				{
+					"internalType": "address",
+					"name": "",
+					"type": "address"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "btsPairImplementation",
+			"outputs": [
+				{
+					"internalType": "address",
+					"name": "",
+					"type": "address"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "months",
+					"type": "uint256"
+				},
+				{
+					"internalType": "uint256",
+					"name": "lpSupply",
+					"type": "uint256"
+				}
+			],
+			"name": "calMgmtFee",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "collectionUri",
+			"outputs": [
+				{
+					"internalType": "string",
+					"name": "",
+					"type": "string"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "string",
+					"name": "_name",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "_symbol",
+					"type": "string"
+				},
+				{
+					"internalType": "address[]",
+					"name": "_tokens",
+					"type": "address[]"
+				},
+				{
+					"internalType": "uint256[]",
+					"name": "_weights",
+					"type": "uint256[]"
+				},
+				{
+					"internalType": "string",
+					"name": "_tokenURI",
+					"type": "string"
+				},
+				{
+					"internalType": "uint256",
+					"name": "_buffer",
+					"type": "uint256"
+				},
+				{
+					"internalType": "string",
+					"name": "_id",
+					"type": "string"
+				},
+				{
+					"internalType": "string",
+					"name": "_description",
+					"type": "string"
+				},
+				{
+					"internalType": "uint256",
+					"name": "_deadline",
+					"type": "uint256"
+				}
+			],
+			"name": "createBTS",
+			"outputs": [],
+			"stateMutability": "payable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "contractAddr",
+					"type": "address"
+				}
+			],
+			"name": "dewhitelistContract",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "_amount",
+					"type": "uint256"
+				},
+				{
+					"internalType": "address[]",
+					"name": "_path",
+					"type": "address[]"
+				}
+			],
+			"name": "getAmountsOut",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "index",
+					"type": "uint256"
+				}
+			],
+			"name": "getBTSAtIndex",
+			"outputs": [
+				{
+					"internalType": "address",
+					"name": "",
+					"type": "address"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "getContractURI",
+			"outputs": [
+				{
+					"internalType": "string",
+					"name": "",
+					"type": "string"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_tokenA",
+					"type": "address"
+				},
+				{
+					"internalType": "address",
+					"name": "_tokenB",
+					"type": "address"
+				}
+			],
+			"name": "getPath",
+			"outputs": [
+				{
+					"internalType": "address[]",
+					"name": "",
+					"type": "address[]"
+				}
+			],
+			"stateMutability": "pure",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "getPlatformFeeConfig",
+			"outputs": [
+				{
+					"internalType": "uint16",
+					"name": "",
+					"type": "uint16"
+				},
+				{
+					"internalType": "uint16",
+					"name": "",
+					"type": "uint16"
+				},
+				{
+					"internalType": "uint16",
+					"name": "",
+					"type": "uint16"
+				},
+				{
+					"internalType": "address",
+					"name": "",
+					"type": "address"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_alva",
+					"type": "address"
+				},
+				{
+					"internalType": "uint16",
+					"name": "_minPercentALVA",
+					"type": "uint16"
+				},
+				{
+					"internalType": "address",
+					"name": "_btsImplementation",
+					"type": "address"
+				},
+				{
+					"internalType": "address",
+					"name": "_btsPairImplementation",
+					"type": "address"
+				},
+				{
+					"internalType": "uint256",
+					"name": "_monthlyFeeRate",
+					"type": "uint256"
+				},
+				{
+					"internalType": "address",
+					"name": "_royaltyReceiver",
+					"type": "address"
+				},
+				{
+					"internalType": "string",
+					"name": "_collectionUri",
+					"type": "string"
+				},
+				{
+					"internalType": "address",
+					"name": "_feeCollector",
+					"type": "address"
+				},
+				{
+					"internalType": "address",
+					"name": "_defaultMarketplace",
+					"type": "address"
+				},
+				{
+					"internalType": "address",
+					"name": "_routerAddress",
+					"type": "address"
+				},
+				{
+					"internalType": "address",
+					"name": "_wethAddress",
+					"type": "address"
+				},
+				{
+					"internalType": "uint256",
+					"name": "_minBTSCreationAmount",
+					"type": "uint256"
+				}
+			],
+			"name": "initialize",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "contractAddr",
+					"type": "address"
+				}
+			],
+			"name": "isWhitelistedContract",
+			"outputs": [
+				{
+					"internalType": "bool",
+					"name": "",
+					"type": "bool"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "minBTSCreationAmount",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "minLpWithdrawal",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "minPercentALVA",
+			"outputs": [
+				{
+					"internalType": "uint16",
+					"name": "",
+					"type": "uint16"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "monthlyFeeRate",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "router",
+			"outputs": [
+				{
+					"internalType": "address",
+					"name": "",
+					"type": "address"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "royaltyPercentage",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "royaltyReceiver",
+			"outputs": [
+				{
+					"internalType": "address",
+					"name": "",
+					"type": "address"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_feeCollector",
+					"type": "address"
+				}
+			],
+			"name": "setFeeCollector",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "newMin",
+					"type": "uint256"
+				}
+			],
+			"name": "setMinLpWithdrawal",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint16",
+					"name": "_btsCreationFee",
+					"type": "uint16"
+				},
+				{
+					"internalType": "uint16",
+					"name": "_contributionFee",
+					"type": "uint16"
+				},
+				{
+					"internalType": "uint16",
+					"name": "_withdrawalFee",
+					"type": "uint16"
+				}
+			],
+			"name": "setPlatformFeeConfig",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "totalBTS",
+			"outputs": [
+				{
+					"internalType": "uint256",
+					"name": "",
+					"type": "uint256"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_alva",
+					"type": "address"
+				}
+			],
+			"name": "updateAlva",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_btsImplementation",
+					"type": "address"
+				}
+			],
+			"name": "updateBTSImplementation",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_btsPairImplementation",
+					"type": "address"
+				}
+			],
+			"name": "updateBTSPairImplementation",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "string",
+					"name": "_collectionURI",
+					"type": "string"
+				}
+			],
+			"name": "updateCollectionURI",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "_minBTSCreationAmount",
+					"type": "uint256"
+				}
+			],
+			"name": "updateMinBTSCreationAmount",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint16",
+					"name": "_minPercentALVA",
+					"type": "uint16"
+				}
+			],
+			"name": "updateMinPercentALVA",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "uint256",
+					"name": "_royaltyPercentage",
+					"type": "uint256"
+				}
+			],
+			"name": "updateRoyaltyPercentage",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [
+				{
+					"internalType": "address",
+					"name": "_royaltyReceiver",
+					"type": "address"
+				}
+			],
+			"name": "updateRoyaltyReceiver",
+			"outputs": [],
+			"stateMutability": "nonpayable",
+			"type": "function"
+		},
+		{
+			"inputs": [],
+			"name": "weth",
+			"outputs": [
+				{
+					"internalType": "address",
+					"name": "",
+					"type": "address"
+				}
+			],
+			"stateMutability": "view",
+			"type": "function"
+		}
+	]
+}

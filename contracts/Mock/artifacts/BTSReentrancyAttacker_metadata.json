@@ -1,0 +1,466 @@
+{
+	"compiler": {
+		"version": "0.8.30+commit.73712a01"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "functionName",
+						"type": "string"
+					}
+				],
+				"name": "AttackAttempted",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "errorMessage",
+						"type": "string"
+					}
+				],
+				"name": "ErrorCaught",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "ReceivedETH",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "message",
+						"type": "string"
+					}
+				],
+				"name": "ReentrancyAttempt",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "result",
+						"type": "string"
+					}
+				],
+				"name": "ReentrancyResult",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_btsAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_buffer",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_deadline",
+						"type": "uint256"
+					}
+				],
+				"name": "attackClaimFee",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_btsAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_buffer",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_deadline",
+						"type": "uint256"
+					}
+				],
+				"name": "attackContribute",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_factoryAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_alvaTokenAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_deadline",
+						"type": "uint256"
+					}
+				],
+				"name": "attackCreateBTS",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_mockBTS",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_deadline",
+						"type": "uint256"
+					}
+				],
+				"name": "attackMockContribute",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_mockBTS",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_deadline",
+						"type": "uint256"
+					}
+				],
+				"name": "attackMockContributeWithNonReentrant",
+				"outputs": [],
+				"stateMutability": "payable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_mockBTS",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_deadline",
+						"type": "uint256"
+					}
+				],
+				"name": "attackMockWithdraw",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_mockBTS",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_deadline",
+						"type": "uint256"
+					}
+				],
+				"name": "attackMockWithdrawWithNonReentrant",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "attackMode",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_btsAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_btsPairAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_liquidity",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_buffer",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_deadline",
+						"type": "uint256"
+					}
+				],
+				"name": "attackWithdraw",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_btsAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_btsPairAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_liquidity",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_buffer",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_deadline",
+						"type": "uint256"
+					}
+				],
+				"name": "attackWithdrawETH",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "btsAddress",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "factoryAddress",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "lastErrorMessage",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "reentrancyDetected",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "reset",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "withdrawETH",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "tokenAddress",
+						"type": "address"
+					}
+				],
+				"name": "withdrawToken",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"stateMutability": "payable",
+				"type": "receive"
+			}
+		],
+		"devdoc": {
+			"details": "Contract that attempts to exploit reentrancy in BTS functions",
+			"kind": "dev",
+			"methods": {
+				"attackCreateBTS(address,address,uint256)": {
+					"details": "Attempts to attack the createBTS function in the Factory contract by trying to reenter during execution",
+					"params": {
+						"_alvaTokenAddress": "Address of the ALVA token",
+						"_deadline": "Deadline for the createBTS function",
+						"_factoryAddress": "Address of the Factory contract to attack"
+					}
+				},
+				"attackMockContribute(address,uint256)": {
+					"details": "Attacks the mock BTS contribute function without nonReentrant modifier",
+					"params": {
+						"_deadline": "Deadline for the contribute function",
+						"_mockBTS": "Address of the mock BTS contract"
+					}
+				},
+				"attackMockContributeWithNonReentrant(address,uint256)": {
+					"details": "Attacks the mock BTS contribute function with nonReentrant modifier",
+					"params": {
+						"_deadline": "Deadline for the contribute function",
+						"_mockBTS": "Address of the mock BTS contract"
+					}
+				},
+				"attackMockWithdraw(address,uint256)": {
+					"details": "Attacks the mock BTS withdraw function without nonReentrant modifier",
+					"params": {
+						"_deadline": "Deadline for the withdraw function",
+						"_mockBTS": "Address of the mock BTS contract"
+					}
+				},
+				"attackMockWithdrawWithNonReentrant(address,uint256)": {
+					"details": "Attacks the mock BTS withdraw function with nonReentrant modifier",
+					"params": {
+						"_deadline": "Deadline for the withdraw function",
+						"_mockBTS": "Address of the mock BTS contract"
+					}
+				}
+			},
+			"title": "BTSReentrancyAttacker",
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/Mock/BTSReentrancyAttacker.sol": "BTSReentrancyAttacker"
+		},
+		"evmVersion": "prague",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/Mock/BTSReentrancyAttacker.sol": {
+			"keccak256": "0xffcef5675e0bec6c46feedf77d1e02f3334444ec80ab70776ec74d97e2cb56c0",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://262386fd987ac7130cec9781f185ebc2767aebf17cbe0870af779b89adb5527d",
+				"dweb:/ipfs/QmU5YApxPAoUWX3Uhjnu7U77ajuoeNdjWJ4oYWgFCtHzrj"
+			]
+		},
+		"contracts/interfaces/IERC20.sol": {
+			"keccak256": "0x8bc93fd43424907389fc5a562f9ff329b67b2701c99c036a655ae14503880bc9",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://9bd7d0172b4a5d639fc48a7a159880510e30073ff03d782a238d4073b5c19bf8",
+				"dweb:/ipfs/QmQ2zryoqxdUxSjCtrwu6bkY5Bwo86fZJY3EEiP3TU85mB"
+			]
+		}
+	},
+	"version": 1
+}

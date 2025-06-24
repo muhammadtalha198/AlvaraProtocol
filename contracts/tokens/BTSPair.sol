@@ -102,7 +102,7 @@ contract BasketTokenStandardPair is ERC20Upgradeable, OwnableUpgradeable, IBTSPa
         _name = string(abi.encodePacked(_name, "-LP"));
 
         __ERC20_init(_name, _name);
-        __Ownable_init();
+        __Ownable_init(msg.sender);
 
         tokens = _tokens;
         reserves = new uint256[]  (tokens.length);

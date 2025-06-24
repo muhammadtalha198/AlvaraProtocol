@@ -1,0 +1,1887 @@
+{
+	"compiler": {
+		"version": "0.8.30+commit.73712a01"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [],
+				"stateMutability": "nonpayable",
+				"type": "constructor"
+			},
+			{
+				"inputs": [],
+				"name": "AccessControlBadConfirmation",
+				"type": "error"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					},
+					{
+						"internalType": "bytes32",
+						"name": "neededRole",
+						"type": "bytes32"
+					}
+				],
+				"name": "AccessControlUnauthorizedAccount",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "InvalidInitialization",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "NotInitializing",
+				"type": "error"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "lockId",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "rewardAmount",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "veAlva",
+						"type": "uint256"
+					}
+				],
+				"name": "Compounded",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint64",
+						"name": "version",
+						"type": "uint64"
+					}
+				],
+				"name": "Initialized",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "previousLockId",
+						"type": "uint256"
+					},
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "newLockId",
+						"type": "uint256"
+					}
+				],
+				"name": "LockRenewed",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "Paused",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "rewardId",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "RewardsAdded",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "rewardAmount",
+						"type": "uint256"
+					}
+				],
+				"name": "RewardsClaimed",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "bytes32",
+						"name": "role",
+						"type": "bytes32"
+					},
+					{
+						"indexed": true,
+						"internalType": "bytes32",
+						"name": "previousAdminRole",
+						"type": "bytes32"
+					},
+					{
+						"indexed": true,
+						"internalType": "bytes32",
+						"name": "newAdminRole",
+						"type": "bytes32"
+					}
+				],
+				"name": "RoleAdminChanged",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "bytes32",
+						"name": "role",
+						"type": "bytes32"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "sender",
+						"type": "address"
+					}
+				],
+				"name": "RoleGranted",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "bytes32",
+						"name": "role",
+						"type": "bytes32"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "sender",
+						"type": "address"
+					}
+				],
+				"name": "RoleRevoked",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "lockId",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "veAlva",
+						"type": "uint256"
+					}
+				],
+				"name": "StakedAmountIncreased",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "lockId",
+						"type": "uint256"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "string",
+						"name": "pool",
+						"type": "string"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "veAlva",
+						"type": "uint256"
+					}
+				],
+				"name": "TokensStaked",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "Unpaused",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "uint256",
+						"name": "lockId",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "endTime",
+						"type": "uint256"
+					}
+				],
+				"name": "Withdrawn",
+				"type": "event"
+			},
+			{
+				"inputs": [],
+				"name": "ADMIN_ROLE",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "ALVA",
+				"outputs": [
+					{
+						"internalType": "contract IERC20",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "DEFAULT_ADMIN_ROLE",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "PAUSER_ROLE",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "PERCENTAGE_FACTOR",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "Pools",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "RATIO_FACTOR",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "REWARDS_ALLOCATOR_ROLE",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "REWARD_PERIOD",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "accountToForeverId",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "accountToIdFinalized",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "accountToLockIds",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"name": "accountTocalculatedRewards",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "claimRewards",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bool",
+						"name": "isForever",
+						"type": "bool"
+					}
+				],
+				"name": "compoundRewards",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "lockId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "batchSize",
+						"type": "uint256"
+					}
+				],
+				"name": "countRewards",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "pendingCurrent",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "openingRewardId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "incrementedAmount",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "currentIdLock",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "currentIdRewards",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "decayInterval",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "getActiveTimeBaseLock",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "timebaseId",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "lockId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "rewardId",
+						"type": "uint256"
+					}
+				],
+				"name": "getIncrementedAmount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "rewardId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "pool",
+						"type": "string"
+					}
+				],
+				"name": "getPoolDataByRewardId",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "getRewardsPending",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "totalReward",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "role",
+						"type": "bytes32"
+					}
+				],
+				"name": "getRoleAdmin",
+				"outputs": [
+					{
+						"internalType": "bytes32",
+						"name": "",
+						"type": "bytes32"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "getTotalLocks",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "userLocksTotal",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "userRewardEligibleLocks",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "pool",
+						"type": "string"
+					}
+				],
+				"name": "getveAlvaAmount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "role",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "grantRole",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "role",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "hasRole",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "isForever",
+						"type": "bool"
+					}
+				],
+				"name": "increaseAmount",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_alva",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "_veAlva",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_decayInterval",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "_startTime",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string[]",
+						"name": "_pools",
+						"type": "string[]"
+					},
+					{
+						"internalType": "uint256[]",
+						"name": "rewards",
+						"type": "uint256[]"
+					},
+					{
+						"internalType": "uint256[]",
+						"name": "veTokenRatio",
+						"type": "uint256[]"
+					},
+					{
+						"internalType": "uint256[]",
+						"name": "duration",
+						"type": "uint256[]"
+					},
+					{
+						"internalType": "uint256[]",
+						"name": "rewardPeriods",
+						"type": "uint256[]"
+					}
+				],
+				"name": "initialize",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "lockIdToLockData",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "pool",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "bool",
+						"name": "isForever",
+						"type": "bool"
+					},
+					{
+						"internalType": "bool",
+						"name": "isActive",
+						"type": "bool"
+					},
+					{
+						"internalType": "uint256",
+						"name": "duration",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "startTime",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "endTime",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "votingPower",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "rewardsCurrent",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "openingRewardId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "closingRewardId",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "totalIncremented",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "minimumRewardAmount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "minimumStakingAmount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "pause",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "paused",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"name": "poolToPoolData",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "status",
+						"type": "bool"
+					},
+					{
+						"internalType": "uint256",
+						"name": "veAlvaRatio",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "poolPercentage",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "duration",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amountLocked",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "rewardPeriods",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "pool",
+						"type": "string"
+					}
+				],
+				"name": "renewStaking",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "role",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "address",
+						"name": "callerConfirmation",
+						"type": "address"
+					}
+				],
+				"name": "renounceRole",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes32",
+						"name": "role",
+						"type": "bytes32"
+					},
+					{
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "revokeRole",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "rewardEligibleLocks",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"name": "rewardIdToRewardData",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "isProcessed",
+						"type": "bool"
+					},
+					{
+						"internalType": "uint256",
+						"name": "timestamp",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "rewardPeriodCount",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "pool",
+						"type": "string"
+					}
+				],
+				"name": "stake",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "startTime",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bytes4",
+						"name": "interfaceId",
+						"type": "bytes4"
+					}
+				],
+				"name": "supportsInterface",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "topUpRewards",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "unallocatedRewards",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "unpause",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "unstake",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "newInterval",
+						"type": "uint256"
+					}
+				],
+				"name": "updateDecayInterval",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "updateMinStakingAmount",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "updateMinimumRewardAmount",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "pool",
+						"type": "string"
+					},
+					{
+						"internalType": "bool",
+						"name": "status",
+						"type": "bool"
+					}
+				],
+				"name": "updatePoolStatus",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "updateWithdrawalPercentage",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "vaultWithdrawalPercentage",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "veALVA",
+				"outputs": [
+					{
+						"internalType": "contract IERC20",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "veAlvaBalance",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"details": "Uses OpenZeppelin's upgradeable libraries for role and pause functionalities.",
+			"errors": {
+				"AccessControlBadConfirmation()": [
+					{
+						"details": "The caller of a function is not the expected one. NOTE: Don't confuse with {AccessControlUnauthorizedAccount}."
+					}
+				],
+				"AccessControlUnauthorizedAccount(address,bytes32)": [
+					{
+						"details": "The `account` is missing a role."
+					}
+				],
+				"InvalidInitialization()": [
+					{
+						"details": "The contract is already initialized."
+					}
+				],
+				"NotInitializing()": [
+					{
+						"details": "The contract is not initializing."
+					}
+				]
+			},
+			"events": {
+				"Initialized(uint64)": {
+					"details": "Triggered when the contract has been initialized or reinitialized."
+				},
+				"Paused(address)": {
+					"details": "Emitted when the pause is triggered by `account`."
+				},
+				"RoleAdminChanged(bytes32,bytes32,bytes32)": {
+					"details": "Emitted when `newAdminRole` is set as ``role``'s admin role, replacing `previousAdminRole` `DEFAULT_ADMIN_ROLE` is the starting admin for all roles, despite {RoleAdminChanged} not being emitted to signal this."
+				},
+				"RoleGranted(bytes32,address,address)": {
+					"details": "Emitted when `account` is granted `role`. `sender` is the account that originated the contract call. This account bears the admin role (for the granted role). Expected in cases where the role was granted using the internal {AccessControl-_grantRole}."
+				},
+				"RoleRevoked(bytes32,address,address)": {
+					"details": "Emitted when `account` is revoked `role`. `sender` is the account that originated the contract call:   - if using `revokeRole`, it is the admin role bearer   - if using `renounceRole`, it is the role bearer (i.e. `account`)"
+				},
+				"Unpaused(address)": {
+					"details": "Emitted when the pause is lifted by `account`."
+				}
+			},
+			"kind": "dev",
+			"methods": {
+				"compoundRewards(bool)": {
+					"details": "Handles both forever and time-based locks. Rewards are added to the locked amount.",
+					"params": {
+						"isForever": "A boolean indicating whether the lock is a forever lock."
+					}
+				},
+				"countRewards(uint256,uint256)": {
+					"params": {
+						"lockId": "The ID of the lock for which rewards are being calculated."
+					},
+					"returns": {
+						"incrementedAmount": "The incremented amount applicable for rewards calculation.",
+						"openingRewardId": "The next reward ID that needs processing for this lock.",
+						"pendingCurrent": "The total pending rewards for the lock."
+					}
+				},
+				"getActiveTimeBaseLock(address)": {
+					"params": {
+						"account": "The address of the account."
+					},
+					"returns": {
+						"timebaseId": "The ID of the active time-based lock."
+					}
+				},
+				"getIncrementedAmount(uint256,uint256)": {
+					"params": {
+						"lockId": "The ID of the lock.",
+						"rewardId": "The ID of the reward period."
+					},
+					"returns": {
+						"amount": "The incremented amount for the lock during the reward period."
+					}
+				},
+				"getPoolDataByRewardId(uint256,string)": {
+					"params": {
+						"pool": "The name of the pool.",
+						"rewardId": "The ID of the reward period."
+					},
+					"returns": {
+						"_0": "(amountLocked, newAmount, expiredAmount) The locked, new, and expired amounts for the pool."
+					}
+				},
+				"getRewardsPending(address)": {
+					"params": {
+						"account": "The address of the account."
+					},
+					"returns": {
+						"totalReward": "The total pending rewards for the account."
+					}
+				},
+				"getRoleAdmin(bytes32)": {
+					"details": "Returns the admin role that controls `role`. See {grantRole} and {revokeRole}. To change a role's admin, use {_setRoleAdmin}."
+				},
+				"getTotalLocks(address)": {
+					"params": {
+						"account": "The address of user."
+					},
+					"returns": {
+						"userLocksTotal": "The total number of locks of an account.",
+						"userRewardEligibleLocks": "The number of locks eligible for reward of an account."
+					}
+				},
+				"getveAlvaAmount(uint256,string)": {
+					"params": {
+						"amount": "The amount of ALVA tokens staked.",
+						"pool": "The name of the pool."
+					},
+					"returns": {
+						"_0": "The calculated veALVA voting power."
+					}
+				},
+				"grantRole(bytes32,address)": {
+					"details": "Grants `role` to `account`. If `account` had not been already granted `role`, emits a {RoleGranted} event. Requirements: - the caller must have ``role``'s admin role. May emit a {RoleGranted} event."
+				},
+				"hasRole(bytes32,address)": {
+					"details": "Returns `true` if `account` has been granted `role`."
+				},
+				"increaseAmount(uint256,bool)": {
+					"details": "Handles both forever and time-based locks. Also finalizes pending rewards before updating the lock.",
+					"params": {
+						"amount": "The additional amount to be staked.",
+						"isForever": "A boolean indicating whether the lock is a forever lock."
+					}
+				},
+				"initialize(address,address,uint256,uint256,string[],uint256[],uint256[],uint256[],uint256[])": {
+					"params": {
+						"_alva": "Address of the ALVA token contract.",
+						"_decayInterval": "Interval for decaying veALVA power.",
+						"_pools": "List of pool names.",
+						"_startTime": "Start time for rewards distribution.",
+						"_veAlva": "Address of the veALVA token contract.",
+						"duration": "Array of durations (in seconds) for each pool.",
+						"rewardPeriods": "Array of reward periods for each pool.",
+						"rewards": "Array of reward percentages for each pool.",
+						"veTokenRatio": "Array of veALVA ratios for each pool."
+					}
+				},
+				"pause()": {
+					"details": "This function can only be called by an account with the PAUSER_ROLE."
+				},
+				"paused()": {
+					"details": "Returns true if the contract is paused, and false otherwise."
+				},
+				"renewStaking(uint256,string)": {
+					"details": "The new lock must have a duration greater than or equal to the existing lock's duration.",
+					"params": {
+						"amount": "The amount of ALVA tokens to stake in the new lock.",
+						"pool": "The name of the pool where the lock will be renewed."
+					}
+				},
+				"renounceRole(bytes32,address)": {
+					"details": "Revokes `role` from the calling account. Roles are often managed via {grantRole} and {revokeRole}: this function's purpose is to provide a mechanism for accounts to lose their privileges if they are compromised (such as when a trusted device is misplaced). If the calling account had been revoked `role`, emits a {RoleRevoked} event. Requirements: - the caller must be `callerConfirmation`. May emit a {RoleRevoked} event."
+				},
+				"revokeRole(bytes32,address)": {
+					"details": "Revokes `role` from `account`. If `account` had been granted `role`, emits a {RoleRevoked} event. Requirements: - the caller must have ``role``'s admin role. May emit a {RoleRevoked} event."
+				},
+				"rewardPeriodCount()": {
+					"returns": {
+						"_0": "The current reward period ID."
+					}
+				},
+				"stake(uint256,string)": {
+					"details": "Staking requires the pool to be active and the amount to meet the minimum staking requirement.",
+					"params": {
+						"amount": "The amount of ALVA tokens to stake.",
+						"pool": "The name of the pool where the tokens will be staked."
+					}
+				},
+				"supportsInterface(bytes4)": {
+					"details": "See {IERC165-supportsInterface}."
+				},
+				"topUpRewards()": {
+					"details": "Can only be called by accounts with the REWARDS_ALLOCATOR_ROLE."
+				},
+				"unpause()": {
+					"details": "This function can only be called by an account with the PAUSER_ROLE."
+				},
+				"unstake()": {
+					"details": "Only applicable to time-based locks. Forever locks cannot be unstaked."
+				},
+				"updateDecayInterval(uint256)": {
+					"details": "This function can only be called by an account with the ADMIN_ROLE.",
+					"params": {
+						"newInterval": "The new decay interval in seconds."
+					}
+				},
+				"updateMinStakingAmount(uint256)": {
+					"details": "This function can only be called by an account with the ADMIN_ROLE.",
+					"params": {
+						"amount": "The new minimum staking amount."
+					}
+				},
+				"updateMinimumRewardAmount(uint256)": {
+					"details": "This function can only be called by an account with the ADMIN_ROLE.",
+					"params": {
+						"amount": "The new minimum reward amount to be set."
+					}
+				},
+				"updatePoolStatus(string,bool)": {
+					"details": "This function can only be called by an account with the ADMIN_ROLE.",
+					"params": {
+						"pool": "The name of the pool to update.",
+						"status": "The new status of the pool (true = active, false = inactive)."
+					}
+				},
+				"updateWithdrawalPercentage(uint256)": {
+					"details": "This function can only be called by an account with the ADMIN_ROLE.",
+					"params": {
+						"amount": "The new withdrawal percentage, scaled by the PERCENTAGE_FACTOR for precision."
+					}
+				},
+				"veAlvaBalance(address)": {
+					"params": {
+						"account": "The address of the user."
+					},
+					"returns": {
+						"_0": "balance The user's current veALVA balance."
+					}
+				}
+			},
+			"title": "AlvaStaking",
+			"version": 1
+		},
+		"userdoc": {
+			"events": {
+				"Compounded(uint256,uint256,uint256,uint256)": {
+					"notice": "Emitted when rewards are compounded."
+				},
+				"LockRenewed(uint256,uint256)": {
+					"notice": "Emitted when an active lock is renewed."
+				},
+				"RewardsAdded(uint256,uint256)": {
+					"notice": "Emitted when new rewards are added to the system."
+				},
+				"RewardsClaimed(address,uint256)": {
+					"notice": "Emitted when a user claims their rewards."
+				},
+				"StakedAmountIncreased(uint256,uint256,uint256)": {
+					"notice": "Emitted when the staked amount is increased for an existing lock."
+				},
+				"TokensStaked(uint256,address,uint256,string,uint256)": {
+					"notice": "--- Events ---Emitted when tokens are staked in a pool."
+				},
+				"Withdrawn(address,uint256,uint256)": {
+					"notice": "Emitted when a user withdraws their tokens after lock expiry."
+				}
+			},
+			"kind": "user",
+			"methods": {
+				"ADMIN_ROLE()": {
+					"notice": "Role that allows admin-level operations."
+				},
+				"ALVA()": {
+					"notice": "Interface of the ALVA token contract."
+				},
+				"PAUSER_ROLE()": {
+					"notice": "Role that allows pausing/unpausing the contract."
+				},
+				"PERCENTAGE_FACTOR()": {
+					"notice": "Percentage precision factor for pool rewards (1e7 scale)."
+				},
+				"Pools(uint256)": {
+					"notice": "List of all pools. Always include \"FOREVER\" at the beginning."
+				},
+				"RATIO_FACTOR()": {
+					"notice": "Ratio factor for calculating veALVA from staked ALVA (1e8 scale)."
+				},
+				"REWARDS_ALLOCATOR_ROLE()": {
+					"notice": "Role that allows adding rewards to the contract."
+				},
+				"REWARD_PERIOD()": {
+					"notice": "Reward period duration in seconds"
+				},
+				"accountToForeverId(address)": {
+					"notice": "Maps user addresses to their forever lock ID."
+				},
+				"accountToIdFinalized(address)": {
+					"notice": "Maps user addresses to their finalized lock ID"
+				},
+				"accountToLockIds(address,uint256)": {
+					"notice": "--- Mappings ---Maps user addresses to their list of lock IDs."
+				},
+				"accountTocalculatedRewards(address)": {
+					"notice": "Maps user addresses to their pending reward amounts."
+				},
+				"claimRewards()": {
+					"notice": "Allows users to claim their accumulated rewards."
+				},
+				"compoundRewards(bool)": {
+					"notice": "Allows users to compound their rewards into an existing lock."
+				},
+				"countRewards(uint256,uint256)": {
+					"notice": "Calculates the rewards for a specific lock based on the current reward state."
+				},
+				"currentIdLock()": {
+					"notice": "Tracks the current lock ID (incremented for each new lock)."
+				},
+				"currentIdRewards()": {
+					"notice": "Tracks the current reward ID (incremented for each reward period)."
+				},
+				"decayInterval()": {
+					"notice": "Time interval for decaying veALVA voting power."
+				},
+				"getActiveTimeBaseLock(address)": {
+					"notice": "Retrieves the active time-based lock ID for a specific account."
+				},
+				"getIncrementedAmount(uint256,uint256)": {
+					"notice": "Retrieves the incremented amount for a specific lock and reward ID."
+				},
+				"getPoolDataByRewardId(uint256,string)": {
+					"notice": "Retrieves pool data for a specific reward period."
+				},
+				"getRewardsPending(address)": {
+					"notice": "Retrieves the total pending rewards for a specific account."
+				},
+				"getTotalLocks(address)": {
+					"notice": "Retrieves number of locks total and reward eligible locks of Account."
+				},
+				"getveAlvaAmount(uint256,string)": {
+					"notice": "Calculates the veALVA voting power for a given amount in a specific pool."
+				},
+				"increaseAmount(uint256,bool)": {
+					"notice": "Allows users to increase the staked amount."
+				},
+				"initialize(address,address,uint256,uint256,string[],uint256[],uint256[],uint256[],uint256[])": {
+					"notice": "Initializes the staking contract with required parameters."
+				},
+				"lockIdToLockData(uint256)": {
+					"notice": "Maps lock IDs to their corresponding lock data."
+				},
+				"minimumRewardAmount()": {
+					"notice": "Minimum reward amount required for allocating rewards."
+				},
+				"minimumStakingAmount()": {
+					"notice": "Minimum staking amount required for participation."
+				},
+				"pause()": {
+					"notice": "Pauses all contract functionality."
+				},
+				"poolToPoolData(string)": {
+					"notice": "Maps pool names to their corresponding data."
+				},
+				"renewStaking(uint256,string)": {
+					"notice": "Allows users to renew their current time-based lock into a new lock with updated parameters."
+				},
+				"rewardEligibleLocks(address,uint256)": {
+					"notice": "Maps user addresses to their list of lock IDs that are eligible for rewards."
+				},
+				"rewardIdToRewardData(uint256)": {
+					"notice": "Maps reward IDs to their corresponding reward data."
+				},
+				"rewardPeriodCount()": {
+					"notice": "Calculates the current reward period ID based on the contract's start time."
+				},
+				"stake(uint256,string)": {
+					"notice": "Allows users to stake ALVA tokens into a specified pool."
+				},
+				"startTime()": {
+					"notice": "Start time for reward distribution."
+				},
+				"topUpRewards()": {
+					"notice": "Allows authorized accounts to add rewards for distribution."
+				},
+				"unallocatedRewards()": {
+					"notice": "Total unallocated rewards available for distribution."
+				},
+				"unpause()": {
+					"notice": "Unpauses all contract functionalities."
+				},
+				"unstake()": {
+					"notice": "Allows users to unstake their tokens after the lock has expired."
+				},
+				"updateDecayInterval(uint256)": {
+					"notice": "Updates the decay interval for veALVA voting power."
+				},
+				"updateMinStakingAmount(uint256)": {
+					"notice": "Updates the minimum staking amount for all pools."
+				},
+				"updateMinimumRewardAmount(uint256)": {
+					"notice": "Updates the minimum reward amount required for allocating rewards."
+				},
+				"updatePoolStatus(string,bool)": {
+					"notice": "Updates the active status of a specific pool."
+				},
+				"updateWithdrawalPercentage(uint256)": {
+					"notice": "Updates the withdrawal percentage applied to the balance of reward vault for reward allocation."
+				},
+				"vaultWithdrawalPercentage()": {
+					"notice": "Percentage of total balance of reward vault to be allocated for reward distribution."
+				},
+				"veALVA()": {
+					"notice": "Interface of the veALVA token contract for voting power."
+				},
+				"veAlvaBalance(address)": {
+					"notice": "Retrieves the current veALVA balance of a user, accounting for decay."
+				}
+			},
+			"notice": "This contract enables staking of ALVA tokens and generates rewards in veALVA.         It includes time-based and forever locks, reward distribution, and role-based access control.",
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/AlvaStaking.sol": "AlvaStaking"
+		},
+		"evmVersion": "prague",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"@openzeppelin/contracts-upgradeable/access/AccessControlUpgradeable.sol": {
+			"keccak256": "0x0d4d7d19a052a2ef9d17b28450133631188b895e1755747fa8ad0280aadfb534",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://838551e10cc07e570b70aee1078e490658d3a0ab8f4adfd4f3f2a565200753da",
+				"dweb:/ipfs/QmceT7R3Pqzywyxr3MSEA7VXU4axZAPS6BLy92iV97rGdG"
+			]
+		},
+		"@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol": {
+			"keccak256": "0xdb4d24ee2c087c391d587cd17adfe5b3f9d93b3110b1388c2ab6c7c0ad1dcd05",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://ab7b6d5b9e2b88176312967fe0f0e78f3d9a1422fa5e4b64e2440c35869b5d08",
+				"dweb:/ipfs/QmXKYWWyzcLg1B2k7Sb1qkEXgLCYfXecR9wYW5obRzWP1Q"
+			]
+		},
+		"@openzeppelin/contracts-upgradeable/security/PausableUpgradeable.sol": {
+			"keccak256": "0xad32f6821f860555f9530902a65b54203a4f5db2117f4384ae47a124958078db",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://6d362da7417bc7d7cc8623f3d3f8f04c3808d043ee6379568c63a63ec14a124e",
+				"dweb:/ipfs/QmYm3wDHUcfGh3MNiRqpWEBbSSYnDSyUsppDATy5DVsfui"
+			]
+		},
+		"@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol": {
+			"keccak256": "0xdbef5f0c787055227243a7318ef74c8a5a1108ca3a07f2b3a00ef67769e1e397",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://08e39f23d5b4692f9a40803e53a8156b72b4c1f9902a88cd65ba964db103dab9",
+				"dweb:/ipfs/QmPKn6EYDgpga7KtpkA8wV2yJCYGMtc9K4LkJfhKX2RVSV"
+			]
+		},
+		"@openzeppelin/contracts-upgradeable/utils/introspection/ERC165Upgradeable.sol": {
+			"keccak256": "0xc8ed8d2056934b7675b695dec032f2920c2f5c6cf33a17ca85650940675323ab",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://3c8ccc75d1cd792d192aa09e54dd49ea35fe85baa9fcd17486f29227d9f29b89",
+				"dweb:/ipfs/QmbboSbFUEiM9tdEgBwuTRb7bykFoJXZ7dsSr1PSREJXMr"
+			]
+		},
+		"@openzeppelin/contracts/access/IAccessControl.sol": {
+			"keccak256": "0x4d9a2b261b56a1e4a37bb038151dec98b952fed16de2bdfdda27e38e2b12b530",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://f724110f7aeb6151af800ab8c12e6060b29bda9e013f0ccb331eb754d6a7cbf0",
+				"dweb:/ipfs/QmUcjzCZpxtUPdEThtAzE1f9LvuJiUGZxTdH9N6bHrb5Cf"
+			]
+		},
+		"@openzeppelin/contracts/utils/introspection/IERC165.sol": {
+			"keccak256": "0x79796192ec90263f21b464d5bc90b777a525971d3de8232be80d9c4f9fb353b8",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://f6fda447a62815e8064f47eff0dd1cf58d9207ad69b5d32280f8d7ed1d1e4621",
+				"dweb:/ipfs/QmfDRc7pxfaXB2Dh9np5Uf29Na3pQ7tafRS684wd3GLjVL"
+			]
+		},
+		"contracts/AlvaStaking.sol": {
+			"keccak256": "0x2fb9968bb95bc37d65bb6411adb5c4c6dcc171b06be45b7286eb9dd249b3007b",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://781db3218ed175d7b6dd50911bd622c34dc6e44e590bdadcc284da14cf6b217a",
+				"dweb:/ipfs/QmdzG2W1ieqDBqsSeGMDgv5jWMvLvxADxKmKZUwSknqCUB"
+			]
+		},
+		"contracts/interfaces/IERC20.sol": {
+			"keccak256": "0x8bc93fd43424907389fc5a562f9ff329b67b2701c99c036a655ae14503880bc9",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://9bd7d0172b4a5d639fc48a7a159880510e30073ff03d782a238d4073b5c19bf8",
+				"dweb:/ipfs/QmQ2zryoqxdUxSjCtrwu6bkY5Bwo86fZJY3EEiP3TU85mB"
+			]
+		}
+	},
+	"version": 1
+}

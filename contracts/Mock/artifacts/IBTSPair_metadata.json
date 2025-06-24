@@ -1,0 +1,150 @@
+{
+	"compiler": {
+		"version": "0.8.30+commit.73712a01"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "spender",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "approve",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "balanceOf",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "transfer",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "from",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					}
+				],
+				"name": "transferFrom",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"kind": "dev",
+			"methods": {},
+			"version": 1
+		},
+		"userdoc": {
+			"kind": "user",
+			"methods": {},
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/Mock/BTSReentrancyAttacker.sol": "IBTSPair"
+		},
+		"evmVersion": "prague",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"contracts/Mock/BTSReentrancyAttacker.sol": {
+			"keccak256": "0xffcef5675e0bec6c46feedf77d1e02f3334444ec80ab70776ec74d97e2cb56c0",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://262386fd987ac7130cec9781f185ebc2767aebf17cbe0870af779b89adb5527d",
+				"dweb:/ipfs/QmU5YApxPAoUWX3Uhjnu7U77ajuoeNdjWJ4oYWgFCtHzrj"
+			]
+		},
+		"contracts/interfaces/IERC20.sol": {
+			"keccak256": "0x8bc93fd43424907389fc5a562f9ff329b67b2701c99c036a655ae14503880bc9",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://9bd7d0172b4a5d639fc48a7a159880510e30073ff03d782a238d4073b5c19bf8",
+				"dweb:/ipfs/QmQ2zryoqxdUxSjCtrwu6bkY5Bwo86fZJY3EEiP3TU85mB"
+			]
+		}
+	},
+	"version": 1
+}

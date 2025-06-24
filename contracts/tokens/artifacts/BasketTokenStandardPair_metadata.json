@@ -1,0 +1,1362 @@
+{
+	"compiler": {
+		"version": "0.8.30+commit.73712a01"
+	},
+	"language": "Solidity",
+	"output": {
+		"abi": [
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "spender",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "allowance",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "needed",
+						"type": "uint256"
+					}
+				],
+				"name": "ERC20InsufficientAllowance",
+				"type": "error"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "sender",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "balance",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "needed",
+						"type": "uint256"
+					}
+				],
+				"name": "ERC20InsufficientBalance",
+				"type": "error"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "approver",
+						"type": "address"
+					}
+				],
+				"name": "ERC20InvalidApprover",
+				"type": "error"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "receiver",
+						"type": "address"
+					}
+				],
+				"name": "ERC20InvalidReceiver",
+				"type": "error"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "sender",
+						"type": "address"
+					}
+				],
+				"name": "ERC20InvalidSender",
+				"type": "error"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "spender",
+						"type": "address"
+					}
+				],
+				"name": "ERC20InvalidSpender",
+				"type": "error"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "string",
+						"name": "paramName",
+						"type": "string"
+					}
+				],
+				"name": "EmptyStringParameter",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "InsufficientLiquidity",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "InvalidInitialization",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "InvalidRecipient",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "InvalidToken",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "NotInitializing",
+				"type": "error"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "owner",
+						"type": "address"
+					}
+				],
+				"name": "OwnableInvalidOwner",
+				"type": "error"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "OwnableUnauthorizedAccount",
+				"type": "error"
+			},
+			{
+				"inputs": [],
+				"name": "ReentrantCall",
+				"type": "error"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "owner",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "spender",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "value",
+						"type": "uint256"
+					}
+				],
+				"name": "Approval",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "uint64",
+						"name": "version",
+						"type": "uint64"
+					}
+				],
+				"name": "Initialized",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "previousOwner",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "OwnershipTransferred",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": false,
+						"internalType": "address[]",
+						"name": "_tokens",
+						"type": "address[]"
+					}
+				],
+				"name": "TokensUpdated",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "from",
+						"type": "address"
+					},
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "value",
+						"type": "uint256"
+					}
+				],
+				"name": "Transfer",
+				"type": "event"
+			},
+			{
+				"anonymous": false,
+				"inputs": [
+					{
+						"indexed": true,
+						"internalType": "address",
+						"name": "owner",
+						"type": "address"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "months",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "supply",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "amount",
+						"type": "uint256"
+					},
+					{
+						"indexed": false,
+						"internalType": "uint256",
+						"name": "newAccruedAt",
+						"type": "uint256"
+					}
+				],
+				"name": "feeAccrued",
+				"type": "event"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "owner",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "spender",
+						"type": "address"
+					}
+				],
+				"name": "allowance",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "spender",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "value",
+						"type": "uint256"
+					}
+				],
+				"name": "approve",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "account",
+						"type": "address"
+					}
+				],
+				"name": "balanceOf",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_to",
+						"type": "address"
+					}
+				],
+				"name": "burn",
+				"outputs": [
+					{
+						"internalType": "uint256[]",
+						"name": "amounts",
+						"type": "uint256[]"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "calFee",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "months",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "supply",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "feeAmount",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_amountLP",
+						"type": "uint256"
+					}
+				],
+				"name": "calculateShareETH",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "amountETH",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_amountETH",
+						"type": "uint256"
+					}
+				],
+				"name": "calculateShareLP",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "amountLP",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_amountLP",
+						"type": "uint256"
+					}
+				],
+				"name": "calculateShareTokens",
+				"outputs": [
+					{
+						"internalType": "uint256[]",
+						"name": "amountTokens",
+						"type": "uint256[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "decimals",
+				"outputs": [
+					{
+						"internalType": "uint8",
+						"name": "",
+						"type": "uint8"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "distMgmtFee",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "factory",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_index",
+						"type": "uint256"
+					}
+				],
+				"name": "getTokenAddress",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_user",
+						"type": "address"
+					}
+				],
+				"name": "getTokenAndUserBal",
+				"outputs": [
+					{
+						"internalType": "uint256[]",
+						"name": "",
+						"type": "uint256[]"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					},
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getTokenList",
+				"outputs": [
+					{
+						"internalType": "address[]",
+						"name": "",
+						"type": "address[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "uint256",
+						"name": "_index",
+						"type": "uint256"
+					}
+				],
+				"name": "getTokenReserve",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getTokensReserve",
+				"outputs": [
+					{
+						"internalType": "uint256[]",
+						"name": "",
+						"type": "uint256[]"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "getTotalMgmtFee",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_factoryAddress",
+						"type": "address"
+					},
+					{
+						"internalType": "string",
+						"name": "_name",
+						"type": "string"
+					},
+					{
+						"internalType": "address[]",
+						"name": "_tokens",
+						"type": "address[]"
+					}
+				],
+				"name": "initialize",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "lastAccruedAt",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "_to",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256[]",
+						"name": "amounts",
+						"type": "uint256[]"
+					}
+				],
+				"name": "mint",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "liquidity",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "name",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "owner",
+				"outputs": [
+					{
+						"internalType": "address",
+						"name": "",
+						"type": "address"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "reentrancyGuardEntered",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "renounceOwnership",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "bool",
+						"name": "_state",
+						"type": "bool"
+					}
+				],
+				"name": "setReentrancyGuardStatus",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "symbol",
+				"outputs": [
+					{
+						"internalType": "string",
+						"name": "",
+						"type": "string"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "totalSupply",
+				"outputs": [
+					{
+						"internalType": "uint256",
+						"name": "",
+						"type": "uint256"
+					}
+				],
+				"stateMutability": "view",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "value",
+						"type": "uint256"
+					}
+				],
+				"name": "transfer",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "from",
+						"type": "address"
+					},
+					{
+						"internalType": "address",
+						"name": "to",
+						"type": "address"
+					},
+					{
+						"internalType": "uint256",
+						"name": "value",
+						"type": "uint256"
+					}
+				],
+				"name": "transferFrom",
+				"outputs": [
+					{
+						"internalType": "bool",
+						"name": "",
+						"type": "bool"
+					}
+				],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address",
+						"name": "newOwner",
+						"type": "address"
+					}
+				],
+				"name": "transferOwnership",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [],
+				"name": "transferTokensToOwner",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			},
+			{
+				"inputs": [
+					{
+						"internalType": "address[]",
+						"name": "_tokens",
+						"type": "address[]"
+					}
+				],
+				"name": "updateTokens",
+				"outputs": [],
+				"stateMutability": "nonpayable",
+				"type": "function"
+			}
+		],
+		"devdoc": {
+			"details": "Implements ERC20 for liquidity tokens and acts as a liquidity pool for the specified tokens",
+			"errors": {
+				"ERC20InsufficientAllowance(address,uint256,uint256)": [
+					{
+						"details": "Indicates a failure with the `spender`’s `allowance`. Used in transfers.",
+						"params": {
+							"allowance": "Amount of tokens a `spender` is allowed to operate with.",
+							"needed": "Minimum amount required to perform a transfer.",
+							"spender": "Address that may be allowed to operate on tokens without being their owner."
+						}
+					}
+				],
+				"ERC20InsufficientBalance(address,uint256,uint256)": [
+					{
+						"details": "Indicates an error related to the current `balance` of a `sender`. Used in transfers.",
+						"params": {
+							"balance": "Current balance for the interacting account.",
+							"needed": "Minimum amount required to perform a transfer.",
+							"sender": "Address whose tokens are being transferred."
+						}
+					}
+				],
+				"ERC20InvalidApprover(address)": [
+					{
+						"details": "Indicates a failure with the `approver` of a token to be approved. Used in approvals.",
+						"params": {
+							"approver": "Address initiating an approval operation."
+						}
+					}
+				],
+				"ERC20InvalidReceiver(address)": [
+					{
+						"details": "Indicates a failure with the token `receiver`. Used in transfers.",
+						"params": {
+							"receiver": "Address to which tokens are being transferred."
+						}
+					}
+				],
+				"ERC20InvalidSender(address)": [
+					{
+						"details": "Indicates a failure with the token `sender`. Used in transfers.",
+						"params": {
+							"sender": "Address whose tokens are being transferred."
+						}
+					}
+				],
+				"ERC20InvalidSpender(address)": [
+					{
+						"details": "Indicates a failure with the `spender` to be approved. Used in approvals.",
+						"params": {
+							"spender": "Address that may be allowed to operate on tokens without being their owner."
+						}
+					}
+				],
+				"InsufficientLiquidity()": [
+					{
+						"details": "The InsufficientLiquidity error is thrown when there is not enough liquidity for an operation"
+					}
+				],
+				"InvalidInitialization()": [
+					{
+						"details": "The contract is already initialized."
+					}
+				],
+				"InvalidRecipient()": [
+					{
+						"details": "The InvalidRecipient error is thrown when an address is zero"
+					}
+				],
+				"InvalidToken()": [
+					{
+						"details": "The InvalidToken error is thrown when a token address is invalid"
+					}
+				],
+				"NotInitializing()": [
+					{
+						"details": "The contract is not initializing."
+					}
+				],
+				"OwnableInvalidOwner(address)": [
+					{
+						"details": "The owner is not a valid owner account. (eg. `address(0)`)"
+					}
+				],
+				"OwnableUnauthorizedAccount(address)": [
+					{
+						"details": "The caller account is not authorized to perform an operation."
+					}
+				],
+				"ReentrantCall()": [
+					{
+						"details": "The ReentrancyError is thrown when a reentrancy attempt is detected"
+					}
+				]
+			},
+			"events": {
+				"Approval(address,address,uint256)": {
+					"details": "Emitted when the allowance of a `spender` for an `owner` is set by a call to {approve}. `value` is the new allowance."
+				},
+				"Initialized(uint64)": {
+					"details": "Triggered when the contract has been initialized or reinitialized."
+				},
+				"TokensUpdated(address[])": {
+					"params": {
+						"_tokens": "New array of token addresses"
+					}
+				},
+				"Transfer(address,address,uint256)": {
+					"details": "Emitted when `value` tokens are moved from one account (`from`) to another (`to`). Note that `value` may be zero."
+				},
+				"feeAccrued(address,uint256,uint256,uint256,uint256)": {
+					"params": {
+						"amount": "Amount of LP tokens to be minted",
+						"months": "Number of months since last accrual",
+						"newAccruedAt": "New timestamp for accrual",
+						"owner": "Address of the BTS",
+						"supply": "Current supply of LP tokens"
+					}
+				}
+			},
+			"kind": "dev",
+			"methods": {
+				"allowance(address,address)": {
+					"details": "See {IERC20-allowance}."
+				},
+				"approve(address,uint256)": {
+					"details": "See {IERC20-approve}. NOTE: If `value` is the maximum `uint256`, the allowance is not updated on `transferFrom`. This is semantically equivalent to an infinite approval. Requirements: - `spender` cannot be the zero address."
+				},
+				"balanceOf(address)": {
+					"details": "See {IERC20-balanceOf}."
+				},
+				"burn(address)": {
+					"details": "Burns LP tokens and transfers the corresponding tokens to the recipient",
+					"params": {
+						"_to": "Address to transfer tokens to"
+					},
+					"returns": {
+						"amounts": "Array of token amounts transferred"
+					}
+				},
+				"calFee()": {
+					"details": "Calculates the management fee based on the time elapsed since last accrual",
+					"returns": {
+						"feeAmount": "Amount of LP tokens to be minted",
+						"months": "Number of months since last accrual",
+						"supply": "Current supply of LP tokens"
+					}
+				},
+				"calculateShareETH(uint256)": {
+					"details": "Calculates the equivalent ETH value for a specific amount of LP tokens",
+					"params": {
+						"_amountLP": "Amount of LP tokens to calculate share for"
+					},
+					"returns": {
+						"amountETH": "Amount of ETH"
+					}
+				},
+				"calculateShareLP(uint256)": {
+					"details": "Calculates the amount of LP tokens for a specific amount of ETH value",
+					"params": {
+						"_amountETH": "Amount of ETH to calculate share for"
+					},
+					"returns": {
+						"amountLP": "Amount of LP tokens"
+					}
+				},
+				"calculateShareTokens(uint256)": {
+					"details": "Calculates the token amounts that correspond to a specific amount of LP tokens",
+					"params": {
+						"_amountLP": "Amount of LP tokens to calculate share for"
+					},
+					"returns": {
+						"amountTokens": "Array of token amounts corresponding to the LP tokens"
+					}
+				},
+				"decimals()": {
+					"details": "Returns the number of decimals used to get its user representation. For example, if `decimals` equals `2`, a balance of `505` tokens should be displayed to a user as `5.05` (`505 / 10 ** 2`). Tokens usually opt for a value of 18, imitating the relationship between Ether and Wei. This is the default value returned by this function, unless it's overridden. NOTE: This information is only used for _display_ purposes: it in no way affects any of the arithmetic of the contract, including {IERC20-balanceOf} and {IERC20-transfer}."
+				},
+				"distMgmtFee()": {
+					"details": "Mints LP tokens for the BTS manager and updates the accrual time. It can be called by internal functions, external cron jobs, or manually by any account."
+				},
+				"getTokenAddress(uint256)": {
+					"params": {
+						"_index": "Index of the token in the basket"
+					},
+					"returns": {
+						"_0": "Token address"
+					}
+				},
+				"getTokenAndUserBal(address)": {
+					"details": "Returns the token balances in the contract and the user's LP token balance",
+					"params": {
+						"_user": "Address to get user balance for"
+					},
+					"returns": {
+						"_0": "_tokenBal Array of token balances in the contract",
+						"_1": "_supply Total supply of LP tokens",
+						"_2": "_userLP User's LP token balance"
+					}
+				},
+				"getTokenList()": {
+					"details": "Returns the array of token addresses in the basket",
+					"returns": {
+						"_0": "Array of token addresses"
+					}
+				},
+				"getTokenReserve(uint256)": {
+					"params": {
+						"_index": "Index of the token in the basket"
+					},
+					"returns": {
+						"_0": "Token reserve"
+					}
+				},
+				"getTokensReserve()": {
+					"details": "Returns the array of token reserves in the basket",
+					"returns": {
+						"_0": "Array of token reserves"
+					}
+				},
+				"getTotalMgmtFee()": {
+					"details": "Returns the fee by calculating new fee and adding existing fee balance",
+					"returns": {
+						"_0": "Total management fee"
+					}
+				},
+				"initialize(address,string,address[])": {
+					"details": "Sets up the ERC20 token and initializes pair parameters",
+					"params": {
+						"_factoryAddress": "Factory contract address",
+						"_name": "Name of the pair token",
+						"_tokens": "Array of token addresses in the pair"
+					}
+				},
+				"mint(address,uint256[])": {
+					"details": "Calculates the liquidity amount based on token balances and mints LP tokens",
+					"params": {
+						"_to": "Address to mint tokens to"
+					},
+					"returns": {
+						"liquidity": "Amount of liquidity tokens minted"
+					}
+				},
+				"name()": {
+					"details": "Returns the name of the token."
+				},
+				"owner()": {
+					"details": "Returns the address of the current owner."
+				},
+				"renounceOwnership()": {
+					"details": "Leaves the contract without owner. It will not be possible to call `onlyOwner` functions. Can only be called by the current owner. NOTE: Renouncing ownership will leave the contract without an owner, thereby disabling any functionality that is only available to the owner."
+				},
+				"setReentrancyGuardStatus(bool)": {
+					"params": {
+						"_state": "New state for the reentrancy guard flag for read-only functions"
+					}
+				},
+				"symbol()": {
+					"details": "Returns the symbol of the token, usually a shorter version of the name."
+				},
+				"totalSupply()": {
+					"details": "See {IERC20-totalSupply}."
+				},
+				"transfer(address,uint256)": {
+					"details": "See {IERC20-transfer}. Requirements: - `to` cannot be the zero address. - the caller must have a balance of at least `value`."
+				},
+				"transferFrom(address,address,uint256)": {
+					"details": "See {IERC20-transferFrom}. Skips emitting an {Approval} event indicating an allowance update. This is not required by the ERC. See {xref-ERC20-_approve-address-address-uint256-bool-}[_approve]. NOTE: Does not update the allowance if the current allowance is the maximum `uint256`. Requirements: - `from` and `to` cannot be the zero address. - `from` must have a balance of at least `value`. - the caller must have allowance for ``from``'s tokens of at least `value`."
+				},
+				"transferOwnership(address)": {
+					"details": "Transfers ownership of the contract to a new account (`newOwner`). Can only be called by the current owner."
+				},
+				"transferTokensToOwner()": {
+					"details": "Transfers all tokens to the owner, typically called during basket rebalancing"
+				},
+				"updateTokens(address[])": {
+					"details": "Updates the tokens array and recalculates reserves",
+					"params": {
+						"_tokens": "New array of token addresses"
+					}
+				}
+			},
+			"stateVariables": {
+				"factory": {
+					"details": "The factory contract is responsible for managing the liquidity pairs"
+				},
+				"lastAccruedAt": {
+					"details": "The lastAccruedAt variable stores the timestamp for occurrence of fee accrual"
+				},
+				"reentrancyGuardEntered": {
+					"details": "Prevents reentrancy by checking the state of operations in BTS"
+				},
+				"reserves": {
+					"details": "The reserves array stores the reserve amounts of the tokens in the basket"
+				},
+				"tokens": {
+					"details": "The tokens array stores the addresses of the tokens in the basket"
+				}
+			},
+			"title": "Basket Token Standard Pair",
+			"version": 1
+		},
+		"userdoc": {
+			"errors": {
+				"EmptyStringParameter(string)": [
+					{
+						"notice": "Error thrown when a parameter string is empty"
+					}
+				],
+				"InsufficientLiquidity()": [
+					{
+						"notice": "Error thrown when there is insufficient liquidity for an operation"
+					}
+				],
+				"InvalidRecipient()": [
+					{
+						"notice": "Error thrown when an invalid recipient address is provided"
+					}
+				],
+				"InvalidToken()": [
+					{
+						"notice": "Error thrown when an invalid token is provided"
+					}
+				],
+				"ReentrantCall()": [
+					{
+						"notice": "Error thrown when a reentrancy attempt is detected"
+					}
+				]
+			},
+			"events": {
+				"TokensUpdated(address[])": {
+					"notice": "Emitted when the token list is updated"
+				},
+				"feeAccrued(address,uint256,uint256,uint256,uint256)": {
+					"notice": "Emitted when the fee is accrued"
+				}
+			},
+			"kind": "user",
+			"methods": {
+				"burn(address)": {
+					"notice": "Burns liquidity tokensThis function is only callable by the owner"
+				},
+				"calFee()": {
+					"notice": "Calculates the management fee"
+				},
+				"calculateShareETH(uint256)": {
+					"notice": "Calculates the share of ETH"
+				},
+				"calculateShareLP(uint256)": {
+					"notice": "Calculates the share of LP tokens"
+				},
+				"calculateShareTokens(uint256)": {
+					"notice": "Calculates the share of tokens"
+				},
+				"distMgmtFee()": {
+					"notice": "Distributes the management fee"
+				},
+				"factory()": {
+					"notice": "Address of the factory contract"
+				},
+				"getTokenAddress(uint256)": {
+					"notice": "Returns the token address in the basket"
+				},
+				"getTokenAndUserBal(address)": {
+					"notice": "Gets the token and user balances"
+				},
+				"getTokenList()": {
+					"notice": "Gets the token list"
+				},
+				"getTokenReserve(uint256)": {
+					"notice": "Returns the token reserve in the basket"
+				},
+				"getTokensReserve()": {
+					"notice": "Gets the token reserves"
+				},
+				"getTotalMgmtFee()": {
+					"notice": "Gets the total management fee"
+				},
+				"initialize(address,string,address[])": {
+					"notice": "Initializes the pair contract"
+				},
+				"lastAccruedAt()": {
+					"notice": "Timestamp of the last fee accrual"
+				},
+				"mint(address,uint256[])": {
+					"notice": "Mints liquidity tokensThis function is only callable by the owner"
+				},
+				"reentrancyGuardEntered()": {
+					"notice": "Boolean to track reentrancy"
+				},
+				"setReentrancyGuardStatus(bool)": {
+					"notice": "Sets or resets the reentrancy guard flagThis function is only callable by the owner"
+				},
+				"transferTokensToOwner()": {
+					"notice": "Transfer Tokens To Owner This function is only callable by the owner"
+				},
+				"updateTokens(address[])": {
+					"notice": "Updates the token listThis function is only callable by the owner"
+				}
+			},
+			"notice": "A contract for managing liquidity pairs of basket tokens",
+			"version": 1
+		}
+	},
+	"settings": {
+		"compilationTarget": {
+			"contracts/tokens/BTSPair.sol": "BasketTokenStandardPair"
+		},
+		"evmVersion": "prague",
+		"libraries": {},
+		"metadata": {
+			"bytecodeHash": "ipfs"
+		},
+		"optimizer": {
+			"enabled": true,
+			"runs": 200
+		},
+		"remappings": []
+	},
+	"sources": {
+		"@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol": {
+			"keccak256": "0xc163fcf9bb10138631a9ba5564df1fa25db9adff73bd9ee868a8ae1858fe093a",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://9706d43a0124053d9880f6e31a59f31bc0a6a3dc1acd66ce0a16e1111658c5f6",
+				"dweb:/ipfs/QmUFmfowzkRwGtDu36cXV9SPTBHJ3n7dG9xQiK5B28jTf2"
+			]
+		},
+		"@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol": {
+			"keccak256": "0xdb4d24ee2c087c391d587cd17adfe5b3f9d93b3110b1388c2ab6c7c0ad1dcd05",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://ab7b6d5b9e2b88176312967fe0f0e78f3d9a1422fa5e4b64e2440c35869b5d08",
+				"dweb:/ipfs/QmXKYWWyzcLg1B2k7Sb1qkEXgLCYfXecR9wYW5obRzWP1Q"
+			]
+		},
+		"@openzeppelin/contracts-upgradeable/token/ERC20/ERC20Upgradeable.sol": {
+			"keccak256": "0xa0e86b70fa5a7bd63795161c0882676fde6a18bbb1991938ef014fb0184b4b13",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://1727a5d693a56ed6af48bace20d8ec26232f0a8f78ff482c5a691cc5c348a019",
+				"dweb:/ipfs/QmdXaYmoETBqAv4YBnSmZyuoovjQMsDjfjnCnBFqXhhQEB"
+			]
+		},
+		"@openzeppelin/contracts-upgradeable/token/ERC20/IERC20Upgradeable.sol": {
+			"keccak256": "0x0e1f0f5f62f67a881cd1a9597acbc0a5e4071f3c2c10449a183b922ae7272e3f",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://c25f742ff154998d19a669e2508c3597b363e123ce9144cd0fcf6521229f401f",
+				"dweb:/ipfs/QmQXRuFzStEWqeEPbhQU6cAg9PaSowxJVo4PDKyRod7dco"
+			]
+		},
+		"@openzeppelin/contracts-upgradeable/token/ERC20/extensions/IERC20PermitUpgradeable.sol": {
+			"keccak256": "0x07e881de3b9f6d2c07909f193f24b96c7fe4ea60013260f3f25aecd8bab3c2f8",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://1fed09b97ccb0ff9ba9b6a94224f1d489026bf6b4b7279bfe64fb6e8749dee4d",
+				"dweb:/ipfs/QmcRAzaSP1UnGr4vrGkfJmB2L9aiTYoXfV1Lg9gqrVRWn8"
+			]
+		},
+		"@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol": {
+			"keccak256": "0x23b997be73d3dd46885262704f0f8cfc7273fdadfe303d37969a9561373972b5",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://d03ebe5406134f0c4a017dee625ff615031194493bd1e88504e5c8fae55bc166",
+				"dweb:/ipfs/QmUZV5bMbgk2PAkV3coouSeSainHN2jhqaQDJaA7hQRyu2"
+			]
+		},
+		"@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol": {
+			"keccak256": "0x9c80f545915582e63fe206c6ce27cbe85a86fc10b9cd2a0e8c9488fb7c2ee422",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://310136ad60820af4177a11a61d77a3686faf5fca4942b600e08fc940db38396b",
+				"dweb:/ipfs/QmbCzMNSTL7Zi7M4UCSqBrkHtp4jjxUnGbkneCZKdR1qeq"
+			]
+		},
+		"@openzeppelin/contracts-upgradeable/utils/ContextUpgradeable.sol": {
+			"keccak256": "0xdbef5f0c787055227243a7318ef74c8a5a1108ca3a07f2b3a00ef67769e1e397",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://08e39f23d5b4692f9a40803e53a8156b72b4c1f9902a88cd65ba964db103dab9",
+				"dweb:/ipfs/QmPKn6EYDgpga7KtpkA8wV2yJCYGMtc9K4LkJfhKX2RVSV"
+			]
+		},
+		"@openzeppelin/contracts/interfaces/draft-IERC6093.sol": {
+			"keccak256": "0x880da465c203cec76b10d72dbd87c80f387df4102274f23eea1f9c9b0918792b",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://399594cd8bb0143bc9e55e0f1d071d0d8c850a394fb7a319d50edd55d9ed822b",
+				"dweb:/ipfs/QmbPZzgtT6LEm9CMqWfagQFwETbV1ztpECBB1DtQHrKiRz"
+			]
+		},
+		"@openzeppelin/contracts/token/ERC20/IERC20.sol": {
+			"keccak256": "0xe06a3f08a987af6ad2e1c1e774405d4fe08f1694b67517438b467cecf0da0ef7",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://df6f0c459663c9858b6cba2cda1d14a7d05a985bed6d2de72bd8e78c25ee79db",
+				"dweb:/ipfs/QmeTTxZ7qVk9rjEv2R4CpCwdf8UMCcRqDNMvzNxHc3Fnn9"
+			]
+		},
+		"@openzeppelin/contracts/token/ERC20/extensions/IERC20Metadata.sol": {
+			"keccak256": "0x70f2f713b13b7ce4610bcd0ac9fec0f3cc43693b043abcb8dc40a42a726eb330",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://c13d13304ac79a83ab1c30168967d19e2203342ebbd6a9bbce4db7550522dcbf",
+				"dweb:/ipfs/QmeN5jKMN2vw5bhacr6tkg78afbTTZUeaacNHqjWt4Ew1r"
+			]
+		},
+		"contracts/interfaces/IBTSPair.sol": {
+			"keccak256": "0x9197c2dc6a0263499023fe9729663cd274178ab12728be376770017765b6f3fc",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://ca05997f835f3465db76fdf6467f9f45a0a2114086075ef807a36c25c370c73d",
+				"dweb:/ipfs/Qmdo7RBaf79BPsc22CZQd1stthZrBjq2qkJGUvKZzwFgop"
+			]
+		},
+		"contracts/interfaces/IFactory.sol": {
+			"keccak256": "0x5636330ecca844a604c16c4f296b8d2912ebacd47833514c290e3cd988a21b37",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://cddc3566c0eba18fae8c0942e638bc5b3c325f2e3f9579ce035861634f0bdc51",
+				"dweb:/ipfs/QmZ6ZHCi4KwDjLTWAJs7QLe67Pv3QwBijv9ErY813umBMg"
+			]
+		},
+		"contracts/tokens/BTSPair.sol": {
+			"keccak256": "0x01945633c96a7b6a78e3dd63902243f35d84fcaf8f2fe02a4a76ca4c4eb5f646",
+			"license": "MIT",
+			"urls": [
+				"bzz-raw://cb90538cc81b8494f8003675d3420e837d674997d6246a2bfbf3bd17b80f3529",
+				"dweb:/ipfs/QmcVzqbSfAkhv3S9FKmKXHozN3w9A6SUTZ78UK5wKP5SXz"
+			]
+		}
+	},
+	"version": 1
+}

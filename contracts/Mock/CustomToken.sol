@@ -9,7 +9,7 @@ contract CustomToken is ERC20Upgradeable, OwnableUpgradeable {
         public
         initializer
     {
-        __Ownable_init();
+        __Ownable_init(msg.sender);
         __ERC20_init(name, symbol);
         _mint(msg.sender, 200_000_000 * 10**decimals());
     }

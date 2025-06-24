@@ -2,18 +2,21 @@
 pragma solidity ^0.8.26;
 
 interface IBTS {
-    function initialize(
-        string calldata _name,
-        string calldata _symbol,
-        address _owner,
-        address _factoryAddress,
-        address[] calldata _tokens,
-        uint256[] calldata _weights,
-        address _btsPair,
-        string calldata _tokenURI,
-        string calldata _id,
-        string calldata _description
-    ) external;
+
+    struct InitParams {
+        string _name;
+        string _symbol;
+        address _owner;
+        address _factoryAddress;
+        address[] _tokens;
+        uint256[] _weights;
+        address _btsPair;
+        string _tokenURI;
+        string _id;
+        string _description;
+    }
+    
+   function initialize(InitParams calldata params) external;
 
     function contribute(uint256 _buffer, uint256 _deadline) external payable;
     function withdraw(uint256 _liquidity, uint256 _buffer, uint256 _deadline) external;

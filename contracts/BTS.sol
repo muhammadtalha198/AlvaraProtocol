@@ -1,8 +1,9 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.26;
-import "@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/token/ERC721/extensions/ERC721URIStorageUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/interfaces/IERC2981Upgradeable.sol";
+import "@openzeppelin/contracts/token/ERC721/IERC721.sol"; 
+import "@openzeppelin/contracts-upgradeable/token/ERC20/utils/SafeERC20Upgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/security/ReentrancyGuardUpgradeable.sol";
 import "@openzeppelin/contracts-upgradeable/utils/AddressUpgradeable.sol";
 import "./interfaces/IBTSPair.sol";
@@ -11,12 +12,8 @@ import "./interfaces/IUniswap.sol";
 import "./interfaces/IWETH.sol";
 import "./interfaces/IBTS.sol";
 
-/// @title Basket Token Standard
-/// @notice A contract for creating and managing tokenized baskets of ERC20 tokens
-/// @dev Implements ERC721 for basket tokens and ERC2981 for royalties
-/// @dev Each basket is represented as a single NFT (tokenId 0) owned by the creator
-/// @dev The contract manages a collection of ERC20 tokens with specified weights
-contract BasketTokenStandard is
+
+contract BasketTokenStandard is 
     ERC721URIStorageUpgradeable,
     IERC2981Upgradeable,
     ReentrancyGuardUpgradeable,
@@ -24,89 +21,43 @@ contract BasketTokenStandard is
 {
     using SafeERC20Upgradeable for IERC20Upgradeable;
 
-    // ===============================================
-    // Type Declarations
-    // ===============================================
-
-    /// @notice Structure containing token addresses and their weights
-    /// @dev Core data structure for the basket's composition
+    
     struct TokenDetails {
         address[] tokens;
         uint256[] weights;
     }
 
-    // ===============================================
-    // Constants
-    // ===============================================
-
-    /// @notice ERC2981 interface identifier for royalty information
-    /// @dev Used for ERC165 interface detection
+   
     bytes4 private constant INTERFACE_ID_ERC2981 = 0x2a55205a;
-
-    /// @notice Precision value for percentage calculations (100% = 10000)
-    /// @dev Used to represent token weights and buffer with high precision
     uint256 public constant PERCENT_PRECISION = 10000;
-
-    // ===============================================
-    // State Variables
-    // ===============================================
-
-    /// @notice Address of the BTS pair contract
-    /// @dev The pair contract holds the actual token reserves and manages liquidity
+    
     address public btsPair;
-
-    /// @notice Address of the factory contract
-    /// @dev Factory provides utility functions and manages whitelisted contracts
     address public factory;
-
-    /// @notice Unique identifier for the basket
-    /// @dev Used for external identification of the basket
     string public id;
-
-    /// @notice Description of the basket
-    /// @dev Human-readable description of the basket's purpose or contents
     string public description;
 
-    /// @notice Mapping for supported interfaces (ERC165)
-    /// @dev Tracks which interfaces the contract implements
     mapping(bytes4 => bool) private _supportedInterfaces;
 
-    /// @notice Storage for token details
-    /// @dev Contains the current set of tokens and their weights in the basket
     TokenDetails private _tokenDetails;
 
-    // ===============================================
-    // Modifiers
-    // ===============================================
-
-    /// @notice Ensures LP withdrawal meets the minimum required by the factory
-    /// @param amount The LP amount being withdrawn
     modifier validateMinLpWithdrawal(uint256 amount) {
         uint256 min = _factory().minLpWithdrawal();
         if (amount < min) revert InvalidWithdrawalAmount();
         _;
     }
 
-    /// @notice Validates that two arrays have the same length
-    /// @param lengthOne Length of the first array
-    /// @param lengthTwo Length of the second array
-    /// @dev Used to ensure tokens and weights arrays match in length
     modifier checkLength(uint256 lengthOne, uint256 lengthTwo) {
         if (lengthOne != lengthTwo || lengthOne == 0 || lengthTwo == 0)
             revert InvalidLength();
         _;
     }
 
-    /// @notice Restricts access to the token owner only
-    /// @dev Uses getOwner() which returns the owner of NFT with ID 0
+
     modifier onlyOwner() {
         if (getOwner() != msg.sender) revert InvalidOwner();
         _;
     }
 
-    /// @notice Modifier to restrict transfers through non-whitelisted contracts
-    /// @param target The target address to check for whitelisting
-    /// @dev Allows transfers to EOAs but restricts contracts to whitelisted ones
     modifier onlyWhitelistedContract(address target) {
         if (isContractAddress(target)) {
             if (!_factory().isWhitelistedContract(target))
@@ -115,43 +66,18 @@ contract BasketTokenStandard is
         _;
     }
 
-    // ===============================================
-    // Events
-    // ===============================================
-
-    /// @notice Emitted when ETH is contributed to the basket
-    /// @param bts Address of the basket contract
-    /// @param sender Address of the contributor
-    /// @param amount Amount of ETH contributed
     event ContributedToBTS(address bts, address indexed sender, uint256 amount);
-
-    /// @notice Emitted when tokens are withdrawn from the basket
-    /// @param bts Address of the basket contract
-    /// @param sender Address of the user withdrawing
-    /// @param tokens Array of token addresses withdrawn
-    /// @param amounts Array of token amounts withdrawn
     event WithdrawnFromBTS(
         address bts,
         address indexed sender,
         address[] tokens,
         uint256[] amounts
     );
-
-    /// @notice Emitted when ETH is withdrawn from the basket
-    /// @param bts Address of the basket contract
-    /// @param sender Address of the user withdrawing
-    /// @param amount Amount of ETH withdrawn
     event WithdrawnETHFromBTS(
         address bts,
         address indexed sender,
         uint256 amount
     );
-
-    /// @notice Emitted when the basket is rebalanced
-    /// @param bts Address of the basket contract
-    /// @param oldtokens Array of token addresses
-    /// @param oldWeights Previous weights of tokens
-    /// @param newWeights New weights of tokens after rebalancing
     event BTSRebalanced(
         address bts,
         address[] oldtokens,
@@ -159,246 +85,188 @@ contract BasketTokenStandard is
         address[] newTokens,
         uint256[] newWeights
     );
-
-    /// @notice Emitted when the platform fee is deducted during a user action (e.g., contribute, withdrawETH, withdrawTokens)
-    /// @param feeAmount The deducted fee amount in wei
-    /// @param feePercent The applied fee percentage
-    /// @param feeCollector The address that received the deducted fee
-    /// @param action The type of action triggering the fee (e.g., "contribute", "withdrawTokens", "withdrawETH")
     event PlatformFeeDeducted(
         uint256 feeAmount,
         uint256 feePercent,
         address indexed feeCollector,
         string action
     );
-
-    /// @notice Emitted when management fee is claimed
-    /// @param bts Address of the basket contract
-    /// @param lpAmount Amount of LP tokens
-    /// @param ethAmount Amount of ETH
     event FeeClaimed(
         address indexed bts,
         address indexed manager,
         uint256 lpAmount,
         uint256 ethAmount
     );
-
-    // ===============================================
-    // Errors
-    // ===============================================
-
-    /// @notice Error thrown when array lengths do not match
     error InvalidLength();
-
-    /// @notice Error thrown when an invalid token is provided
     error InvalidToken();
-
-    /// @notice Error thrown when token weights are invalid
     error InvalidWeight();
-
-    /// @notice Error thrown when a non-owner tries to perform an owner-only action
     error InvalidOwner();
-
-    /// @notice Error thrown when buffer value is invalid
-    /// @param provided The provided buffer value
-    /// @param minRequired The minimum required buffer
-    /// @param maxAllowed The maximum allowed buffer
     error InvalidBuffer(
         uint256 provided,
         uint256 minRequired,
         uint256 maxAllowed
     );
-
-    /// @notice Error thrown when a contract is not whitelisted
-    error ContractNotWhitelisted();
-
-    /// @notice Error thrown when a zero value is sent for a contribution
-    error ZeroContributionAmount();
-
-    /// @notice Error thrown when an emergency operation has invalid parameters
-    error InvalidEmergencyParams();
-
-    /// @notice Error thrown when no ALVA token is included in the basket
-    error NoAlvaTokenIncluded();
-
-    /// @notice Error thrown when ALVA token percentage is too low
-    /// @param provided The provided ALVA percentage
-    /// @param required The minimum required percentage
-    error InsufficientAlvaPercentage(uint256 provided, uint256 required);
-
-    /// @notice Error thrown when a duplicate token is detected
     error DuplicateToken();
-
-    /// @notice Error thrown when a token weight is zero
+    error ContractNotWhitelisted();
+    error ZeroContributionAmount();
+    error InvalidEmergencyParams();
+    error NoAlvaTokenIncluded();
+    error InsufficientAlvaPercentage(uint256 provided, uint256 required);
     error ZeroTokenWeight();
-
-    /// @notice Error thrown when an interface ID is invalid
     error InvalidInterfaceId();
-
-    /// @notice Error thrown when a withdrawal amount is zero or invalid
     error InvalidWithdrawalAmount();
-
-    /// @notice Thrown when the dealine is in past and invalid to be used for the execution
-    /// @param deadline The invalid deadline value that caused the error
     error DeadlineInPast(uint256 deadline);
-
-    /// @notice Thrown when the targetted address is not a valid contract address
-    /// @param target The address that cased the error
     error InvalidContractAddress(address target);
-
-    /// @notice Reverts if _index is out of bounds
-    /// @param index The index that cased the error
-    /// @param length Length of the tokens
     error TokenIndexOutOfBounds(uint256 index, uint256 length);
-
-    /// @notice Reverts if an unauthorized user tries to send tokens to the contract
-    /// @param sender The sender address that cased the error
     error UnauthorizedSender(address sender);
 
-    // ===============================================
-    // Initialization
-    // ===============================================
 
-    /// @notice Initializes a new Basket Token
-    /// @dev Sets up the ERC721 token and initializes basket parameters
-    /// @param _name Name of the basket token
-    /// @param _symbol Symbol of the basket token
-    /// @param _owner Owner of the basket token
-    /// @param _factoryAddress Factory contract address
-    /// @param _tokens Array of token addresses in the basket
-    /// @param _weights Array of weights for each token
-    /// @param _btsPair BTS pair contract address
-    /// @param _tokenURI URI of the basket token
-    /// @param _id ID of the basket token
-    /// @param _description Description of the basket
+    
     function initialize(
-        string calldata _name,
-        string calldata _symbol,
-        address _owner,
-        address _factoryAddress,
-        address[] calldata _tokens,
-        uint256[] calldata _weights,
-        address _btsPair,
-        string calldata _tokenURI,
-        string calldata _id,
-        string calldata _description
-    ) external checkLength(_tokens.length, _weights.length) initializer {
-        __ERC721_init(_name, _symbol);
+        InitParams calldata params
+    ) external checkLength(params._tokens.length, params._weights.length) initializer {
+        __ERC721_init(params._name, params._symbol);
         _registerInterface(INTERFACE_ID_ERC2981);
         __ReentrancyGuard_init();
 
-        factory = _factoryAddress;
-        id = _id;
-        _checkValidTokensAndWeights(_tokens, _weights);
+        factory = params._factoryAddress;
+        id = params._id;
+        _checkValidTokensAndWeights(params._tokens,params._weights);
 
-        btsPair = _btsPair;
+        btsPair = params._btsPair;
 
-        _tokenDetails.tokens = _tokens;
-        _tokenDetails.weights = _weights;
+        _tokenDetails.tokens = params._tokens;
+        _tokenDetails.weights = params._weights;
 
-        description = _description;
+        description = params._description;
 
-        _safeMint(_owner, 0);
-        _setTokenURI(0, _tokenURI);
+        _safeMint(params._owner, 0);
+        _setTokenURI(0, params._tokenURI);
     }
 
-    // ===============================================
-    // External Functions
-    // ===============================================
-
-    /// @notice Allows the contract to receive ETH
-    /// @dev Required for WETH.withdraw() to work properly
     receive() external payable {
         if (!isContractAddress(msg.sender))
             revert UnauthorizedSender(msg.sender);
     }
 
-    /// @notice Allows users to contribute ETH to the basket
-    /// @dev Swaps ETH for tokens according to their weights and mints LP tokens
-    /// @dev The ETH is split proportionally according to token weights and swapped
-    /// @param _buffer Maximum allowed buffer percentage (0-5000)
-    function contribute(uint256 _buffer, uint256 _deadline)
-        external
-        payable
-        nonReentrant
-    {
+
+    function contribute(uint256 _buffer, uint256 _deadline) external payable nonReentrant {
+        
         if (_buffer == 0 || _buffer >= 5000) {
             revert InvalidBuffer(_buffer, 1, 4999);
         }
-        if (msg.value == 0) revert ZeroContributionAmount();
-
-        if (_deadline <= block.timestamp) revert DeadlineInPast(_deadline);
-        IFactory factoryInstance = _factory();
-        // Get contribution fee from the Factory contract
-        (, uint256 contributionFee, , address feeCollector) = factoryInstance
-            .getPlatformFeeConfig();
-
-        uint256 feeAmount = 0;
-        // Deduct the contribution fee
-        if (contributionFee > 0) {
-            feeAmount = (msg.value * contributionFee) / PERCENT_PRECISION; // Calculate the contribution fee
-            (bool success, ) = payable(feeCollector).call{value: feeAmount}(""); // Transfer fee to feeCollector
-            require(success, "Failed to deduct Contribution Fee");
-            emit PlatformFeeDeducted(
-                feeAmount,
-                contributionFee,
-                feeCollector,
-                "contribute"
-            ); // Emit fee event for contribution
-        }
-
-        uint256 amountAfterFee = msg.value - feeAmount;
-        address wethAddress = factoryInstance.weth();
-        address routerAddress = factoryInstance.router();
-
-        uint256 totalAllocated;
-        uint256 tokensLength = _tokenDetails.tokens.length;
-        uint256[] memory amounts = new uint256[](tokensLength);
         
-        for(uint256 i = 0; i < tokensLength; ) {
-            address token = _tokenDetails.tokens[i];
-            uint256 weight = _tokenDetails.weights[i];
+        if (msg.value == 0) revert ZeroContributionAmount();
+        if (_deadline <= block.timestamp) revert DeadlineInPast(_deadline);
 
-            uint256 _amountInMin;
-            // For the last token, use remaining amount to avoid dust
-            if (i == tokensLength - 1) {
-                _amountInMin = amountAfterFee - totalAllocated;
-            } else {
-                _amountInMin = (amountAfterFee * weight) / PERCENT_PRECISION;
-                totalAllocated += _amountInMin;
-            }
+        IFactory factoryInstance = _factory();
 
-            address[] memory path = factoryInstance.getPath(wethAddress, token);
+        (, uint256 contributionFee, , address feeCollector) = factoryInstance.getPlatformFeeConfig();
 
-            uint256 _amountOutMin = (factoryInstance.getAmountsOut(_amountInMin, path) * 
-                (PERCENT_PRECISION - _buffer)) / PERCENT_PRECISION;
+        (, uint256 amountAfterFee) = _handleFee(msg.value, contributionFee, feeCollector);
 
-            uint256 balance = IERC20Upgradeable(token).balanceOf(btsPair);
-            
-            IUniswapV2Router(routerAddress)
-                .swapExactETHForTokensSupportingFeeOnTransferTokens{ value: _amountInMin }(
-                    _amountOutMin,
-                    path,
-                    btsPair,
-                    _deadline
-                );
-    
-            amounts[i] = IERC20Upgradeable(token).balanceOf(btsPair) - balance;
+        uint256[] memory amounts = _swapETHToTokens(factoryInstance, amountAfterFee, _buffer, _deadline);
 
-            unchecked {
-                ++i;
-            }
-        }
         IBTSPair(btsPair).mint(msg.sender, amounts);
 
         emit ContributedToBTS(address(this), msg.sender, msg.value);
     }
 
-    /// @notice Allows users to withdraw their tokens from the basket
-    /// @dev Burns LP tokens and sends the underlying tokens to the user after deducting fees
-    /// @param _liquidity Amount of liquidity tokens to burn
-    /// @param _buffer Buffer tolerance to be used during swaps
-    /// @param _deadline the deadline being used for the swapping
+    function _handleFee(uint256 msgValue, uint256 contributionFee, address feeCollector) private
+    returns (uint256 feeAmount, uint256 amountAfterFee) {
+
+        if (contributionFee > 0) {
+            feeAmount = (msgValue * contributionFee) / PERCENT_PRECISION;
+            (bool success, ) = payable(feeCollector).call{value: feeAmount}("");
+            require(success, "Failed to deduct Contribution Fee");
+            emit PlatformFeeDeducted(feeAmount, contributionFee, feeCollector, "contribute");
+        }
+
+        amountAfterFee = msgValue - feeAmount;
+    }
+
+
+    function _swapETHToTokens(
+        IFactory factoryInstance,
+        uint256 amountAfterFee,
+        uint256 _buffer,
+        uint256 _deadline
+    ) private returns (uint256[] memory amounts) {
+        uint256 tokensLength = _tokenDetails.tokens.length;
+        amounts = new uint256[](tokensLength);
+        uint256 totalAllocated;
+
+        for (uint256 i = 0; i < tokensLength; ) {
+            uint256 amountInMin = _calculateAmountInMin(i, amountAfterFee, totalAllocated);
+            if (i != tokensLength - 1) {
+                totalAllocated += amountInMin;
+            }
+
+            amounts[i] = _swapSingleToken(
+                factoryInstance,
+                i,
+                amountInMin,
+                _buffer,
+                _deadline
+            );
+
+            unchecked {
+                ++i;
+            }
+        }
+    }
+
+
+    function _calculateAmountInMin(
+        uint256 index,
+        uint256 amountAfterFee,
+        uint256 totalAllocated
+    ) private view returns (uint256) {
+        if (index == _tokenDetails.tokens.length - 1) {
+            return amountAfterFee - totalAllocated;
+        }
+        uint256 weight = _tokenDetails.weights[index];
+        return (amountAfterFee * weight) / PERCENT_PRECISION;
+    }
+
+
+    function _swapSingleToken(
+        IFactory factoryInstance,
+        uint256 index,
+        uint256 amountInMin,
+        uint256 _buffer,
+        uint256 _deadline
+    ) private returns (uint256 amountOut) {
+        address token = _tokenDetails.tokens[index];
+        address wethAddress = factoryInstance.weth();
+        address routerAddress = factoryInstance.router();
+
+        address[] memory path = factoryInstance.getPath(wethAddress, token);
+
+        uint256 amountOutMin = _getAmountOutMin(factoryInstance, amountInMin, path, _buffer);
+        uint256 balanceBefore = IERC20Upgradeable(token).balanceOf(btsPair);
+
+        IUniswapV2Router(routerAddress)
+            .swapExactETHForTokensSupportingFeeOnTransferTokens{value: amountInMin}(
+                amountOutMin,
+                path,
+                btsPair,
+                _deadline
+            );
+
+        amountOut = IERC20Upgradeable(token).balanceOf(btsPair) - balanceBefore;
+    }
+
+    function _getAmountOutMin(
+        IFactory factoryInstance,
+        uint256 amountIn,
+        address[] memory path,
+        uint256 buffer
+    ) private view returns (uint256) {
+        uint256 rawOut = factoryInstance.getAmountsOut(amountIn, path);
+        return (rawOut * (PERCENT_PRECISION - buffer)) / PERCENT_PRECISION;
+    }
+
     function withdraw(
         uint256 _liquidity,
         uint256 _buffer,
@@ -455,12 +323,6 @@ contract BasketTokenStandard is
         );
     }
 
-    /// @notice Internal function to convert tokens to ETH and send to a receiver
-    /// @dev Swaps tokens to ETH and sends to the specified receiver
-    /// @param _amounts Array of token amounts to convert
-    /// @param _receiver Address to receive the ETH
-    /// @param _buffer Maximum allowed buffer percentage
-    /// @return totalETH Total amount of ETH sent to receiver
     function _tokensToEth(
         IFactory factoryInstance,
         uint256[] memory _amounts,
@@ -511,10 +373,6 @@ contract BasketTokenStandard is
         return totalETH;
     }
 
-    /// @notice Allows users to withdraw and convert to WETH
-    /// @dev Burns LP tokens, receives the underlying tokens, and swaps them to WETH
-    /// @param _liquidity Amount of liquidity tokens to burn
-    /// @param _buffer Maximum allowed buffer percentage
     function withdrawETH(
         uint256 _liquidity,
         uint256 _buffer,
@@ -593,11 +451,6 @@ contract BasketTokenStandard is
         _rebalance(_newTokens, _newWeights, _buffer, false, _deadline);
     }
 
-    /// @notice Emergency function to rebalance the basket to a stable configuration
-    /// @dev Allows rebalancing to exactly 2 tokens in emergency situations
-    /// @param _newTokens Array containing exactly 2 token addresses
-    /// @param _newWeights Array containing the weights for the 2 tokens, must sum to 100%
-    /// @param _buffer Maximum allowed buffer percentage
     function emergencyStable(
         address[] calldata _newTokens,
         uint256[] calldata _newWeights,
@@ -610,10 +463,7 @@ contract BasketTokenStandard is
         _rebalance(_newTokens, _newWeights, _buffer, true, _deadline);
     }
 
-    /// @notice Function to claim management fee for this BTS
-    /// @dev Converts claimed LP tokens to WETH and sends to the basket owner
-    /// @param amount Amount of LP tokens to claim as management fee
-    /// @param _buffer Maximum allowed buffer percentage for token swaps (1-4999)
+
     function claimFee(
         uint256 amount,
         uint256 _buffer,
@@ -640,46 +490,33 @@ contract BasketTokenStandard is
         emit FeeClaimed(address(this), getOwner(), amount, ethBought);
     }
 
-    /// @notice Override transfer functions to enforce whitelist
-    /// @dev Only allows transfers to whitelisted contracts
-    /// @param from Current owner address
-    /// @param to New owner address
-    /// @param tokenId ID of the token being transferred (always 0 for this contract)
+
     function transferFrom(
         address from,
         address to,
         uint256 tokenId
     )
         public
-        override(ERC721Upgradeable, IERC721Upgradeable)
+        override(ERC721Upgradeable,IERC721 )
         onlyWhitelistedContract(to)
     {
         super.transferFrom(from, to, tokenId);
     }
 
-    /// @notice Safe version of transferFrom with additional checks
-    /// @dev Only allows transfers to whitelisted contracts
-    /// @param from Current owner address
-    /// @param to New owner address
-    /// @param tokenId ID of the token being transferred (always 0 for this contract)
+
     function safeTransferFrom(
         address from,
         address to,
         uint256 tokenId
     )
         public
-        override(ERC721Upgradeable, IERC721Upgradeable)
+        override(ERC721Upgradeable, IERC721)
         onlyWhitelistedContract(to)
     {
         super.safeTransferFrom(from, to, tokenId);
     }
 
-    /// @notice Safe version of transferFrom with data parameter
-    /// @dev Only allows transfers to whitelisted contracts
-    /// @param from Current owner address
-    /// @param to New owner address
-    /// @param tokenId ID of the token being transferred (always 0 for this contract)
-    /// @param data Additional data with no specified format
+
     function safeTransferFrom(
         address from,
         address to,
@@ -687,31 +524,25 @@ contract BasketTokenStandard is
         bytes memory data
     )
         public
-        override(ERC721Upgradeable, IERC721Upgradeable)
+        override(ERC721Upgradeable, IERC721)
         onlyWhitelistedContract(to)
     {
         super.safeTransferFrom(from, to, tokenId, data);
     }
 
-    /// @notice Override approve function to enforce whitelist
-    /// @dev Only allows approvals to whitelisted contracts
-    /// @param to Address to approve
-    /// @param tokenId ID of the token to approve (always 0 for this contract)
+
     function approve(address to, uint256 tokenId)
         public
-        override(ERC721Upgradeable, IERC721Upgradeable)
+        override(ERC721Upgradeable, IERC721)
         onlyWhitelistedContract(to)
     {
         super.approve(to, tokenId);
     }
 
-    /// @notice Override setApprovalForAll function to enforce whitelist
-    /// @dev Only allows approvals to whitelisted contracts
-    /// @param operator Address to approve as operator
-    /// @param approved Approval status to set
+
     function setApprovalForAll(address operator, bool approved)
         public
-        override(ERC721Upgradeable, IERC721Upgradeable)        
+        override(ERC721Upgradeable, IERC721)        
     {
         if(approved) {
             if (isContractAddress(operator) && !_factory().isWhitelistedContract(operator)) {
@@ -722,15 +553,7 @@ contract BasketTokenStandard is
         super.setApprovalForAll(operator, approved);
     }
 
-    // ===============================================
-    // Internal/Private Functions
-    // ===============================================
 
-    /// @notice Validates that tokens and weights are correctly configured
-    /// @dev Checks that each token is unique, weights are valid, and ALVA is included
-    /// @dev Weights must sum to PERCENT_PRECISION (10000) and ALVA must meet minimum percentage
-    /// @param _tokens Array of token addresses
-    /// @param _weights Array of token weights
     function _checkValidTokensAndWeights(
         address[] memory _tokens,
         uint256[] memory _weights
@@ -776,11 +599,7 @@ contract BasketTokenStandard is
         if (_totalWeight != PERCENT_PRECISION) revert InvalidWeight();
     }
 
-    /// @notice Internal function to withdraw liquidity
-    /// @dev Transfers LP tokens from the user to the pair contract and burns them
-    /// @param _liquidity Amount of liquidity tokens to burn
-    /// @param _to Address to receive the tokens
-    /// @return amounts Array of token amounts withdrawn
+
     function _withdraw(uint256 _liquidity, address _to)
         private
         returns (uint256[] memory amounts)
@@ -795,13 +614,7 @@ contract BasketTokenStandard is
         amounts = IBTSPair(btsPair).burn(_to);
     }
 
-    /// @notice Internal function to perform basket rebalancing
-    /// @dev Converts all tokens to WETH, then distributes WETH to buy new tokens
-    /// @param _newTokens Array of new token addresses
-    /// @param _newWeights Array of new token weights
-    /// @param _buffer Maximum allowed buffer percentage
-    /// @param _isEmergencyStable Flag for emergency stable conversion which requires exactly 2 tokens
-    /// @param _deadline Deadline for the transaction
+
     function _rebalance(
         address[] memory _newTokens,
         uint256[] memory _newWeights,
@@ -814,69 +627,13 @@ contract BasketTokenStandard is
         }
         if (_deadline <= block.timestamp) revert DeadlineInPast(_deadline);
 
-        // As alva is required in any case
         _checkValidTokensAndWeights(_newTokens, _newWeights);
 
         IBTSPair(btsPair).setReentrancyGuardStatus(true);
         IBTSPair(btsPair).transferTokensToOwner();
 
-        uint256 _wethBought;
-
-        address wethAddress = _factory().weth();
-        address routerAddress = _factory().router();
-        uint256 tokensLength = _tokenDetails.tokens.length;
-
-        for (uint256 i = 0; i < tokensLength; ) {
-            address token = _tokenDetails.tokens[i]; // ✅ cache token
-            uint256 balance = IERC20Upgradeable(token).balanceOf(address(this)); // ✅ cache balance
-
-            if (balance > 0) {
-                _wethBought += _swapTokensForTokens(
-                    token,
-                    wethAddress,
-                    routerAddress,
-                    balance,
-                    address(this),
-                    _buffer,
-                    _deadline
-                );
-            }
-
-            unchecked {
-                ++i;
-            }
-        }
-
-        tokensLength = _newWeights.length;
-        uint256 totalAllocated;
-
-        for (uint256 i = 0; i < tokensLength; ) {
-            uint256 amountToSwap;
-
-            // For the last token, use remaining amount to avoid dust
-            if (i == tokensLength - 1) {
-                amountToSwap = _wethBought - totalAllocated;
-            } else {
-                amountToSwap =
-                    (_wethBought * _newWeights[i]) /
-                    PERCENT_PRECISION;
-                totalAllocated += amountToSwap;
-            }
-
-            _swapTokensForTokens(
-                wethAddress,
-                _newTokens[i],
-                routerAddress,
-                amountToSwap,
-                btsPair,
-                _buffer,
-                _deadline
-            );
-
-            unchecked {
-                ++i;
-            }
-        }
+        uint256 wethAmount = _withdrawAllTokensToWETH(_buffer, _deadline);
+        _distributeWETHIntoNewTokens(_newTokens, _newWeights, wethAmount, _buffer, _deadline);
 
         emit BTSRebalanced(
             address(this),
@@ -892,15 +649,81 @@ contract BasketTokenStandard is
         IBTSPair(btsPair).setReentrancyGuardStatus(false);
     }
 
-    /// @notice Swaps tokens using the Uniswap router
-    /// @dev Internal function to handle token swaps with buffer protection
-    /// @param _tokenIn Address of the input token
-    /// @param _tokenOut Address of the output token
-    /// @param _router Address of the Uniswap router
-    /// @param _amountIn Amount of input tokens
-    /// @param _to Address to receive output tokens
-    /// @param _buffer Maximum allowed buffer percentage
-    /// @return Amount of output tokens received
+    function _withdrawAllTokensToWETH(
+        uint256 _buffer,
+        uint256 _deadline
+    ) private returns (uint256 totalWETH) {
+        IFactory factory1 = _factory();
+        address weth = factory1.weth();
+        address router = factory1.router();
+
+        uint256 tokensLength = _tokenDetails.tokens.length;
+
+        for (uint256 i = 0; i < tokensLength; ) {
+            address token = _tokenDetails.tokens[i];
+            uint256 balance = IERC20Upgradeable(token).balanceOf(address(this));
+
+            if (balance > 0) {
+                totalWETH += _swapTokensForTokens(
+                    token,
+                    weth,
+                    router,
+                    balance,
+                    address(this),
+                    _buffer,
+                    _deadline
+                );
+            }
+
+            unchecked {
+                ++i;
+            }
+        }
+    }
+
+    function _distributeWETHIntoNewTokens(
+        address[] memory _newTokens,
+        uint256[] memory _newWeights,
+        uint256 wethAmount,
+        uint256 _buffer,
+        uint256 _deadline
+    ) private {
+        IFactory factory1 = _factory();
+        address weth = factory1.weth();
+        address router = factory1.router();
+
+        uint256 tokensLength = _newWeights.length;
+        uint256 totalAllocated;
+
+        for (uint256 i = 0; i < tokensLength; ) {
+            uint256 amountToSwap;
+
+            if (i == tokensLength - 1) {
+                amountToSwap = wethAmount - totalAllocated;
+            } else {
+                amountToSwap = (wethAmount * _newWeights[i]) / PERCENT_PRECISION;
+                totalAllocated += amountToSwap;
+            }
+
+            _swapTokensForTokens(
+                weth,
+                _newTokens[i],
+                router,
+                amountToSwap,
+                btsPair,
+                _buffer,
+                _deadline
+            );
+
+            unchecked {
+                ++i;
+            }
+        }
+    }
+
+
+
+
     function _swapTokensForTokens(
         address _tokenIn,
         address _tokenOut,
@@ -933,20 +756,11 @@ contract BasketTokenStandard is
         return balanceAfter - balanceBefore;
     }
 
-    /// @notice Registers an interface with ERC165
-    /// @dev Adds the interface ID to the supported interfaces mapping for standard detection
-    /// @dev This enables NFT marketplace and wallet compatibility via ERC-165 interface detection
-    /// @param interfaceId The interface identifier, as specified in ERC-165
     function _registerInterface(bytes4 interfaceId) internal virtual {
         if (interfaceId == 0xffffffff) revert InvalidInterfaceId();
         _supportedInterfaces[interfaceId] = true;
     }
 
-    /// @notice Checks if any address in the array matches the given address
-    /// @dev Loops through the array starting from the given index and checks for matches
-    /// @param _array Array to loop through
-    /// @param _address Address to check
-    /// @param _startIndex Index to start checking from
     function _checkForDuplicateAddress(
         address[] memory _array,
         address _address,
@@ -963,36 +777,22 @@ contract BasketTokenStandard is
         return false;
     }
 
-    /// @notice Returns the factory instance casted to IFactory interface
-    /// @dev Used to avoid repeated casting of the factory address in loops and functions
-    /// @return factoryInstance The factory interface instance
+ 
     function _factory() private view returns (IFactory) {
         return IFactory(factory);
     }
 
-    /**
-     * @notice Checks if an address is a contract
-     * @param target The address to check
-     * @return bool True if the address is a contract, false otherwise
-     */
+
     function isContractAddress(address target) internal view returns (bool) {
         return AddressUpgradeable.isContract(target);
     }
 
-    // ===============================================
-    // Public/External View/Pure Functions
-    // ===============================================
 
-    /// @notice Gets the total number of tokens in the basket
-    /// @dev Returns the length of the tokens array
-    /// @return tokenLength Number of tokens in the basket
     function totalTokens() external view returns (uint256 tokenLength) {
         tokenLength = _tokenDetails.tokens.length;
     }
 
-    /// @notice Calculates the total value of all tokens in WETH
-    /// @dev Converts each token's value to its WETH equivalent using the router
-    /// @return value Total value of all tokens in WETH
+
     function getTokenValueByWETH() public view returns (uint256 value) {
         IFactory factoryInstance = _factory(); // ✅ Cache factory
         address wethAddress = factoryInstance.weth(); // ✅ Cache weth
@@ -1012,17 +812,12 @@ contract BasketTokenStandard is
         }
     }
 
-    /// @notice Returns the contract-level metadata URI
-    /// @dev Used for OpenSea and other marketplaces to display collection info
-    /// @return URI string from the factory contract
+
     function contractURI() public view returns (string memory) {
         return _factory().getContractURI();
     }
 
-    /// @notice Checks if contract supports a given interface
-    /// @dev Combines OpenZeppelin's implementation with custom interfaces
-    /// @param interfaceId Interface identifier to check
-    /// @return True if interface is supported
+
     function supportsInterface(bytes4 interfaceId)
         public
         view
@@ -1035,11 +830,7 @@ contract BasketTokenStandard is
             _supportedInterfaces[interfaceId];
     }
 
-    /// @notice Calculates royalty information for token sales
-    /// @dev Implements ERC2981 to provide royalty information
-    /// @param _salePrice Price at which the token is being sold
-    /// @return receiver Address to receive royalties
-    /// @return royaltyAmount Amount of royalty to pay
+
     function royaltyInfo(
         uint256, /* _tokenId */
         uint256 _salePrice
@@ -1056,11 +847,7 @@ contract BasketTokenStandard is
         }
     }
 
-    /// @notice Gets the details of a token at specified index
-    /// @dev Returns both the token address and its weight in the basket
-    /// @param _index Index of the token in the basket
-    /// @return token Address of the token
-    /// @return weight Weight of the token in the basket
+
     function getTokenDetails(uint256 _index)
         external
         view
@@ -1072,9 +859,7 @@ contract BasketTokenStandard is
         weight = _tokenDetails.weights[_index];
     }
 
-    /// @notice Gets all token details including addresses and weights
-    /// @return tokens Array of token addresses
-    /// @return weights Array of token weights
+ 
     function getTokenDetails()
         external
         view
@@ -1083,8 +868,7 @@ contract BasketTokenStandard is
         return (_tokenDetails.tokens, _tokenDetails.weights);
     }
 
-    /// @notice Get existing owner of BTS, which will be the owner of 0 token
-    /// @return owner address
+ 
     function getOwner() public view returns (address owner) {
         return ownerOf(0);
     }

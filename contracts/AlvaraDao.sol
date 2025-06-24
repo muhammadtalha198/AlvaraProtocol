@@ -30,7 +30,7 @@ contract AlvaraDao is Initializable, OwnableUpgradeable, UUPSUpgradeable {
         address _xalva,
         uint256 _lockedPeriod
     ) public initializer {
-        __Ownable_init();
+        __Ownable_init(msg.sender);
         __UUPSUpgradeable_init();
 
         require(_alva != address(0), "Invalid alva address");
